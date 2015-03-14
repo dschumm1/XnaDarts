@@ -10,7 +10,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 {
     public class DartScoreComponent : IDrawableGameComponent
     {
-        private const float DartBlinkRate = 500.0f;
+        private const float DartBlinkRate = 0.5f;
         private Texture2D _solidDart;
         public Texture2D DartTexture;
         private readonly GameMode _mode;
@@ -63,14 +63,6 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             {
                 //Blinking dart
                 var numberOffset = drawBlinkingDart(spriteBatch, dartSize, temp, i);
-
-                if (XnaDartsGame.Options.Debug)
-                {
-                    numberOffset = ScreenManager.Trebuchet24.MeasureString((i + 1).ToString())*0.5f;
-                    spriteBatch.DrawString(ScreenManager.Trebuchet24, (i + 1).ToString(),
-                        temp + dartSize*0.5f - numberOffset, Color.White);
-                }
-
                 spriteBatch.Draw(_numberTextures[i], temp + dartSize*0.5f - numberOffset, Color.White);
 
                 temp += dartSize*orientation;
@@ -98,7 +90,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             var dartTexturePosition = temp + dartSize*0.5f - dartTextureSize*0.5f;
             if (i == _mode.CurrentPlayerRound.Darts.Count)
             {
-                var alpha = 0.33f*(float) (Math.Sin(XnaDartsGame.ElapsedTime*MathHelper.Pi/DartBlinkRate));
+                var alpha = (float) (Math.Sin(XnaDartsGame.ElapsedTime*MathHelper.Pi/DartBlinkRate));
                 spriteBatch.Draw(_solidDart, dartTexturePosition, Color.White*alpha);
             }
 
