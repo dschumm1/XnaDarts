@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using XnaDarts.Gameplay;
 using XnaDarts.Gameplay.Modes;
 using XnaDarts.ScreenManagement;
 using XnaDarts.Screens.Menus;
@@ -10,22 +11,27 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 {
     public class DartScoreComponent : IDrawableGameComponent
     {
-        private const float DartBlinkRate = 500.0f;
+        private const float DartBlinkRate = 0.5f;
+        private Vector2 _dartTextureSize;
+        private Vector2 _numberTextureSize;
         private Texture2D _solidDart;
         public Texture2D DartTexture;
         private readonly GameMode _mode;
         private readonly Texture2D[] _numberTextures = new Texture2D[3];
+        public bool Vertical;
+        public Vector2 Position;
 
         public DartScoreComponent(GameMode mode)
         {
             _mode = mode;
+            Position = new Vector2(0.5f, 0.7f);
         }
 
         public void LoadContent(ContentManager content)
         {
             DartTexture = content.Load<Texture2D>(@"Images\DartStroke");
             _solidDart = content.Load<Texture2D>(@"Images\DartHighlight");
-
+            _dartTextureSize = new Vector2(DartTexture.Width, DartTexture.Height);
 
             for (var i = 0; i < 3; i++)
             {
@@ -33,21 +39,18 @@ namespace XnaDarts.Screens.GameModeScreens.Components
                     content.Load<Texture2D>(@"Images\" + XnaDartsGame.Options.Theme + @"\" + @"CricketNumbers\" +
                                             (i + 1));
             }
+
+            _numberTextureSize = new Vector2(_numberTextures[0].Width, _numberTextures[0].Height);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var dartSize = new Vector2(DartTexture.Width, DartTexture.Height)*1.4f;
-            var position = new Vector2(XnaDartsGame.Viewport.Width*0.5f - GameMode.DartsPerTurn*0.5f*dartSize.X,
-                XnaDartsGame.Viewport.Height*0.68f);
-            DrawDartScore(spriteBatch, dartSize, position, false);
-        }
+            var viewport = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
+            var centerOfDarts = viewport*Position;
 
-        public virtual void DrawDartScore(SpriteBatch spriteBatch, Vector2 dartSize, Vector2 position, bool vertical)
-        {
             Vector2 orientation;
 
-            if (vertical)
+            if (Vertical)
             {
                 orientation = Vector2.UnitY;
             }
@@ -56,55 +59,60 @@ namespace XnaDarts.Screens.GameModeScreens.Components
                 orientation = Vector2.UnitX;
             }
 
-            var temp = position + dartSize*orientation*_mode.CurrentPlayerRound.Darts.Count;
+            var dartsPadding = 0.6f*_dartTextureSize;
+            var dartsSpacing = _dartTextureSize + dartsPadding;
+            var dartsOffset = dartsSpacing*(GameMode.DartsPerTurn - 1)*0.5f * orientation;
 
             //Draw images
-            for (var i = _mode.CurrentPlayerRound.Darts.Count; i < GameMode.DartsPerTurn; i++)
+            for (var i = 0; i < GameMode.DartsPerTurn; i++)
             {
-                //Blinking dart
-                var numberOffset = drawBlinkingDart(spriteBatch, dartSize, temp, i);
+                var dartPosition = centerOfDarts - dartsOffset + dartsSpacing * i * orientation;
 
-                if (XnaDartsGame.Options.Debug)
+                if (i < _mode.CurrentPlayerRound.Darts.Count)
                 {
-                    numberOffset = ScreenManager.Trebuchet24.MeasureString((i + 1).ToString())*0.5f;
-                    spriteBatch.DrawString(ScreenManager.Trebuchet24, (i + 1).ToString(),
-                        temp + dartSize*0.5f - numberOffset, Color.White);
+                    var dart = _mode.CurrentPlayerRound.Darts[i];
+                    drawDartScoreInText(spriteBatch, dart, dartPosition);
                 }
+                else
+                {
+                    drawSolidDart(spriteBatch, dartPosition);
 
-                spriteBatch.Draw(_numberTextures[i], temp + dartSize*0.5f - numberOffset, Color.White);
+                    if (i == _mode.CurrentPlayerRound.Darts.Count)
+                    {
+                        drawBlinkingDart(spriteBatch, dartPosition);
+                    }
 
-                temp += dartSize*orientation;
-            }
-
-            temp = position;
-            var center = dartSize*0.5f;
-
-            // Draw dart score
-            foreach (var dart in _mode.CurrentPlayerRound.Darts)
-            {
-                string text;
-                Color c;
-                dart.GetVerbose(out text, out c);
-
-                var offset = ScreenManager.Trebuchet32.MeasureString(text)*0.5f;
-                TextBlock.DrawShadowed(spriteBatch, ScreenManager.Trebuchet32, text, c, temp + center - offset);
-                temp += dartSize*orientation;
+                    drawNumber(spriteBatch, i, dartPosition);
+                }
             }
         }
 
-        private Vector2 drawBlinkingDart(SpriteBatch spriteBatch, Vector2 dartSize, Vector2 temp, int i)
+        private static void drawDartScoreInText(SpriteBatch spriteBatch, Dart dart, Vector2 dartPosition)
         {
-            var dartTextureSize = new Vector2(DartTexture.Width, DartTexture.Height);
-            var dartTexturePosition = temp + dartSize*0.5f - dartTextureSize*0.5f;
-            if (i == _mode.CurrentPlayerRound.Darts.Count)
-            {
-                var alpha = 0.33f*(float) (Math.Sin(XnaDartsGame.ElapsedTime*MathHelper.Pi/DartBlinkRate));
-                spriteBatch.Draw(_solidDart, dartTexturePosition, Color.White*alpha);
-            }
+            string text;
+            Color color;
+            dart.GetVerbose(out text, out color);
 
-            spriteBatch.Draw(DartTexture, dartTexturePosition, Color.White);
-            var numberOffset = new Vector2(_numberTextures[0].Width, _numberTextures[0].Height)*0.5f;
-            return numberOffset;
+            var textOffset = ScreenManager.Trebuchet32.MeasureString(text)*0.5f;
+            TextBlock.DrawShadowed(spriteBatch, ScreenManager.Trebuchet32, text, color,
+                dartPosition - textOffset);
+        }
+
+        private void drawNumber(SpriteBatch spriteBatch, int i, Vector2 position)
+        {
+            var numberOffset = _numberTextureSize*0.5f;
+            spriteBatch.Draw(_numberTextures[i], position - numberOffset, Color.White);
+        }
+
+        private void drawSolidDart(SpriteBatch spriteBatch, Vector2 position)
+        {
+            spriteBatch.Draw(DartTexture, position - _dartTextureSize*0.5f, Color.White);
+        }
+
+        private void drawBlinkingDart(SpriteBatch spriteBatch, Vector2 position)
+        {
+            var alpha = ((float) (Math.Sin(XnaDartsGame.ElapsedTime*MathHelper.Pi/DartBlinkRate)) + 1)*0.5f;
+            spriteBatch.Draw(_solidDart, position - _dartTextureSize*0.5f, Color.White*alpha);
         }
     }
 }
