@@ -1,5 +1,4 @@
 # XnaDarts
-=======
 ##About
 This program communicates with the dart board through a virtual com-port. I'm using the FT232 usb -> serial converter and an arduino connected to the dart board matrix.
 
