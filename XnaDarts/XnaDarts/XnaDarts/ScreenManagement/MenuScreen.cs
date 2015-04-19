@@ -19,7 +19,7 @@ namespace XnaDarts.ScreenManagement
         private Curve _myCurve;
         private int _selectedEntry;
         private float _transitionPosition = 2;
-        private float _transitionTimer;
+        private float _transitionTimer = 0;
         public StackPanel MenuItems = new StackPanel();
         public Vector2 MenuPosition;
         public int PaddingX = 24;
@@ -178,7 +178,7 @@ namespace XnaDarts.ScreenManagement
                 transitionTo = 2;
             }
 
-            _transitionPosition += (transitionTo - _transitionPosition)*MathHelper.Lerp(0, 1, _transitionTimer);
+            _transitionPosition += (transitionTo - _transitionPosition)*MathHelper.Lerp(0, 1, MathHelper.Clamp(_transitionTimer, 0, 1));
 
             if (float.IsNaN(_transitionPosition))
             {

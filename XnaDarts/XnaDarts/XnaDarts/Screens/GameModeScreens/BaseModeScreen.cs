@@ -36,7 +36,7 @@ namespace XnaDarts.Screens.GameModeScreens
         private void startGame()
         {
             XnaDartsGame.SoundManager.PlaySound(SoundCue.GameStart);
-            startRound();
+            StartRound();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
             if (Mode.IsFirstPlayer())
             {
-                startRound();
+                StartRound();
             }
             else if (Mode.IsFirstThrow())
             {
@@ -113,7 +113,6 @@ namespace XnaDarts.Screens.GameModeScreens
 
         #region Screens
 
-        private AwardScreen _awardScreen;
         private TimeoutScreen _newRoundTimeoutScreen;
         private PlayerChangeScreen _playerChangeScreen;
         private TimeoutScreen _throwDartsScreen;
@@ -188,9 +187,6 @@ namespace XnaDarts.Screens.GameModeScreens
             _dartboard.OnSegmentClicked += registerDart;
             _dartboard.Scale = 0.5f;
 
-            _awardScreen = new AwardScreen();
-            _awardScreen.LoadContent(Content);
-
             _playerChangeScreen = new PlayerChangeScreen("Player Change",
                 TimeSpan.FromSeconds(XnaDartsGame.Options.PlayerChangeTimeout));
             _playerChangeScreen.LoadContent();
@@ -262,11 +258,8 @@ namespace XnaDarts.Screens.GameModeScreens
 
         #region StartRound
 
-        private void startRound()
+        public virtual void StartRound()
         {
-            //Stop any award videos that are currently playing
-            _awardScreen.Stop();
-
             // Play new round sound
             playNewRoundSound();
             showNewRoundMessageScreen();
@@ -307,11 +300,6 @@ namespace XnaDarts.Screens.GameModeScreens
             else
             {
                 ShowPlayerChangeScreen();
-            }
-
-            if (Mode.IsLastThrow())
-            {
-                _awardScreen.PlayAwards(Mode.CurrentPlayerRound);
             }
         }
 

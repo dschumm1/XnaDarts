@@ -30,8 +30,11 @@ namespace XnaDarts.Screens.Menus.Standard
 
         private void CountUp_OnSelected(object sender, EventArgs e)
         {
-            var screen = new PlayerSelectScreen(4);
-            screen.OnPlayerSelect = CountUp_PlayerSelect;
+            var screen = new PlayerSelectScreen(4)
+            {
+                OnPlayerSelect = CountUp_PlayerSelect
+            };
+
             XnaDartsGame.ScreenManager.AddScreen(screen);
         }
 
