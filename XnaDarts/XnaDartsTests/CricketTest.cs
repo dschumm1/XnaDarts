@@ -13,6 +13,22 @@ namespace XnaDartsTests
         }
 
         [Test]
+        public void ClosedScore()
+        {
+            var cricket = new Cricket(2);
+
+            cricket.RegisterDart(20, 3);
+            cricket.RegisterDart(20, 3);
+            cricket.RegisterDart(20, 3);
+            Assert.AreEqual(120, cricket.GetScore(cricket.Players[0]));
+            cricket.NextPlayer();
+
+            cricket.RegisterDart(20, 3);
+            Assert.AreEqual(120, cricket.GetScore(cricket.Players[0]));
+            Assert.IsFalse(getSegment(cricket, 20).IsOpen);
+        }
+
+        [Test]
         public void AllSegmentsAreClosed()
         {
             var cricket = new Cricket(2);
@@ -152,7 +168,7 @@ namespace XnaDartsTests
             // Player 2, close 20
             cricket.RegisterDart(20, 3);
             Assert.IsFalse(getSegment(cricket, 20).IsOpen);
-            Assert.AreEqual(null, getSegment(cricket, 20).Owner);
+            Assert.AreEqual(cricket.Players[0], getSegment(cricket, 20).Owner);
 
             cricket.Unthrow();
             Assert.IsTrue(getSegment(cricket, 20).IsOpen);

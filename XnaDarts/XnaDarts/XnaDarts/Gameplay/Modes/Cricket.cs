@@ -37,16 +37,38 @@ namespace XnaDarts.Gameplay.Modes
             }
         }
 
+        private Player _owner;
+
         public Player Owner
         {
             get
             {
-                var playersWhoHaveTheRequiredMarks = this.playersWhoHaveTheRequiredMarks();
-                if (playersWhoHaveTheRequiredMarks.Count == 1)
-                {
-                    return playersWhoHaveTheRequiredMarks.First();
-                }
-                return null;
+                return getOwner();
+            }
+        }
+
+        private Player getOwner()
+        {
+            checkIfCurrentOwnerStillHasRequiredMarks();
+            assignOwner();
+            return _owner;
+        }
+
+        private void assignOwner()
+        {
+            var playersWhoHaveTheRequiredMarks = this.playersWhoHaveTheRequiredMarks();
+            if (playersWhoHaveTheRequiredMarks.Count == 1)
+            {
+                _owner = playersWhoHaveTheRequiredMarks.First();
+            }
+        }
+
+        private void checkIfCurrentOwnerStillHasRequiredMarks()
+        {
+            // remove the owner if he no longer has the required marks
+            if (_owner != null && _marks[_owner].Sum(dart => dart.ScoredMarks) < SegmentMultiplierPrice)
+            {
+                _owner = null;
             }
         }
 
