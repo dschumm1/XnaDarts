@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using XnaDarts.Gameplay.Modes;
 using XnaDarts.ScreenManagement;
 using XnaDarts.Screens.GameModeScreens.Components;
+using XnaDarts.Screens.GameScreens;
 
 namespace XnaDarts.Screens.GameModeScreens
 {
     public class ZeroOneModeScreen : BaseModeScreen
     {
         private TimeoutScreen _bustScreen;
+        private AwardScreen _awardScreen;
 
         public ZeroOneModeScreen(ZeroOne zeroOne) : base(zeroOne)
         {
@@ -24,8 +26,6 @@ namespace XnaDarts.Screens.GameModeScreens
 
         public override void LoadContent()
         {
-            base.LoadContent();
-
             _bustScreen = new TimeoutScreen("Bust", TimeSpan.FromSeconds(3))
             {
                 Color = Color.Red
@@ -34,6 +34,11 @@ namespace XnaDarts.Screens.GameModeScreens
             _bustScreen.OnTimeout += bustScreenTimeout;
 
             _bustScreen.LoadContent();
+
+            _awardScreen = new AwardScreen();
+            _awardScreen.LoadContent();
+
+            base.LoadContent();
         }
 
         private void bustScreenTimeout()
@@ -57,6 +62,11 @@ namespace XnaDarts.Screens.GameModeScreens
             else
             {
                 base.HandleEndOfTurn();
+
+                if (Mode.IsLastThrow())
+                {
+                    _awardScreen.PlayAwards(Mode.CurrentPlayerRound);
+                }
             }
         }
 
@@ -64,6 +74,14 @@ namespace XnaDarts.Screens.GameModeScreens
         {
             XnaDartsGame.SoundManager.PlaySound(SoundCue.Bust);
             XnaDartsGame.ScreenManager.AddScreen(_bustScreen);
+        }
+
+        public override void StartRound()
+        {
+            //Stop any award videos that are currently playing
+            _awardScreen.Stop();
+
+            base.StartRound();
         }
     }
 }

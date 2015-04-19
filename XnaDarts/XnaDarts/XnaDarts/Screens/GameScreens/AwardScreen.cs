@@ -26,23 +26,30 @@ namespace XnaDarts.Screens.GameScreens
         private bool _loaded;
         private readonly Dictionary<AwardCue, Video> _awards = new Dictionary<AwardCue, Video>();
         private readonly VideoPlayer _videoPlayer;
+        private ContentManager _content;
 
         public AwardScreen()
         {
             _videoPlayer = new VideoPlayer();
         }
 
-        public void LoadContent(ContentManager content)
+
+        public override void LoadContent()
         {
+            if (_content == null)
+            {
+                _content = new ContentManager(XnaDartsGame.ScreenManager.Game.Services, @"Content");
+            }
+
             if (!_loaded)
             {
-                _awards.Add(AwardCue.HatTrick, content.Load<Video>(@"Awards\HatTrick"));
-                _awards.Add(AwardCue.HighTon, content.Load<Video>(@"Awards\HighTon"));
-                _awards.Add(AwardCue.LowTon, content.Load<Video>(@"Awards\LowTon"));
-                _awards.Add(AwardCue.ThreeInABed, content.Load<Video>(@"Awards\ThreeInABed"));
-                _awards.Add(AwardCue.ThreeInTheBlack, content.Load<Video>(@"Awards\ThreeInTheBlack"));
-                _awards.Add(AwardCue.TonEighty, content.Load<Video>(@"Awards\TonEighty"));
-                _awards.Add(AwardCue.WhiteHorse, content.Load<Video>(@"Awards\WhiteHorse"));
+                _awards.Add(AwardCue.HatTrick, _content.Load<Video>(@"Awards\HatTrick"));
+                _awards.Add(AwardCue.HighTon, _content.Load<Video>(@"Awards\HighTon"));
+                _awards.Add(AwardCue.LowTon, _content.Load<Video>(@"Awards\LowTon"));
+                _awards.Add(AwardCue.ThreeInABed, _content.Load<Video>(@"Awards\ThreeInABed"));
+                _awards.Add(AwardCue.ThreeInTheBlack, _content.Load<Video>(@"Awards\ThreeInTheBlack"));
+                _awards.Add(AwardCue.TonEighty, _content.Load<Video>(@"Awards\TonEighty"));
+                _awards.Add(AwardCue.WhiteHorse, _content.Load<Video>(@"Awards\WhiteHorse"));
                 _loaded = true;
             }
         }
