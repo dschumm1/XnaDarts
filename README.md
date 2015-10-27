@@ -52,12 +52,12 @@ Game modes to add:
   * [Up Down Count Up](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=929)
 
 ##Screenshots
-https://cloud.githubusercontent.com/assets/1239842/6649671/ed1a445e-c9f0-11e4-8ad1-ce8886ea8d70.png
-https://cloud.githubusercontent.com/assets/1239842/6649669/ecf7564c-c9f0-11e4-8a11-a38fccc89f8f.png
-https://cloud.githubusercontent.com/assets/1239842/6649670/ed10a282-c9f0-11e4-85fa-51c77f40fd22.png
+ * [301](https://cloud.githubusercontent.com/assets/1239842/6649671/ed1a445e-c9f0-11e4-8ad1-ce8886ea8d70.png)
+ * [Cricket](https://cloud.githubusercontent.com/assets/1239842/6649669/ecf7564c-c9f0-11e4-8a11-a38fccc89f8f.png)
+ * [Editing Segment Map](https://cloud.githubusercontent.com/assets/1239842/6649670/ed10a282-c9f0-11e4-85fa-51c77f40fd22.png)
 
 ##Photos
-http://dart.martinpersson.org/IMGP5680.jpg
-http://dart.martinpersson.org/IMGP5683.jpg
-http://files.martinpersson.org/WP_000197.jpg
-http://files.martinpersson.org/WP_000198.jpg
+* http://dart.martinpersson.org/IMGP5680.jpg
+* http://dart.martinpersson.org/IMGP5683.jpg
+* http://files.martinpersson.org/WP_000197.jpg
+* http://files.martinpersson.org/WP_000198.jpg
