@@ -27,16 +27,17 @@ http://dart.martinpersson.org/layout.jpg
 
 I've soldered the connectors to a experimentation board, then added connectors from that board which goes to my breadboard pcb with the arduino (see photos below).
 
-##Todo
-  * Marks per round/average number of marks/ppd/ppr in cricket
-  * Add Master In/Out Options. With Master Out (and Master -Bull, Triples, Doubles) enabled, players have to end on a triple, double or bulls-eye.
-  * Personal Statistics (online score tracking?)
-  * Graphical improvements
-  * Add Cricket Cut Throat when playing with three or more players
-  * Ability to change the Bull split (50/50) or (25/50)
-  * Ability to change the setting of allowing all players to end their round even if a player before them has won
-  * Improve end of game screen (display all player statistics etc)
-  * Increase test coverage
+##Todo (in a somewhat prioritized order)
+  * Add Master In or Out Options. With Master In or Out enabled, players have to open or end on a triple, double or bulls-eye.
+  * Ability to set the number of rounds.
+  * Marks per round/average number of marks/ppd/ppr in cricket.
+  * Add Cricket Cut Throat.
+  * Ability to change the setting of allowing all players to end their round even if a player before them has won.
+  * Improve end of game screen (display all player statistics etc).
+  * Personal Statistics (online score tracking?).
+  * Graphical improvements.
+  * Ability to change the Bull split (50/50) or (25/50).
+  * Increase test coverage.
 
 Game modes to add:
   * [Archery](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=927)
