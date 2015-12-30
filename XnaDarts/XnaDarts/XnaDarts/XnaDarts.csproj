@@ -79,7 +79,11 @@
     <Compile Include="Gameplay\Modes\Bastard.cs" />
     <Compile Include="Gameplay\Modes\CountUp.cs" />
     <Compile Include="Gameplay\Modes\Cricket.cs" />
+    <Compile Include="Gameplay\Modes\CricketDart.cs" />
+    <Compile Include="Gameplay\Modes\CricketSegment.cs" />
     <Compile Include="Gameplay\Modes\GameMode.cs" />
+    <Compile Include="Gameplay\Modes\Record.cs" />
+    <Compile Include="Gameplay\Modes\RecordManager.cs" />
     <Compile Include="Gameplay\Modes\Shootout.cs" />
     <Compile Include="Gameplay\Modes\YamuYamu.cs" />
     <Compile Include="Gameplay\Modes\ZeroOne.cs" />

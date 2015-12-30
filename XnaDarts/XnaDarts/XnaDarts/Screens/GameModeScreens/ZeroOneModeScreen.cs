@@ -31,7 +31,7 @@ namespace XnaDarts.Screens.GameModeScreens
                 Color = Color.Red
             };
 
-            _bustScreen.OnTimeout += bustScreenTimeout;
+            _bustScreen.OnTimeout += _bustScreenTimeout;
 
             _bustScreen.LoadContent();
 
@@ -41,7 +41,7 @@ namespace XnaDarts.Screens.GameModeScreens
             base.LoadContent();
         }
 
-        private void bustScreenTimeout()
+        private void _bustScreenTimeout()
         {
             if (!Mode.IsGameOver())
             {
@@ -57,7 +57,7 @@ namespace XnaDarts.Screens.GameModeScreens
         {
             if (ZeroOne.IsBust())
             {
-                handleBust();
+                _handleBust();
             }
             else
             {
@@ -70,7 +70,7 @@ namespace XnaDarts.Screens.GameModeScreens
             }
         }
 
-        private void handleBust()
+        private void _handleBust()
         {
             XnaDartsGame.SoundManager.PlaySound(SoundCue.Bust);
             XnaDartsGame.ScreenManager.AddScreen(_bustScreen);

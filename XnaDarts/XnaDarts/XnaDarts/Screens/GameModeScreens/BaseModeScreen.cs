@@ -33,7 +33,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         #endregion
 
-        private void startGame()
+        private void _startGame()
         {
             XnaDartsGame.SoundManager.PlaySound(SoundCue.GameStart);
             StartRound();
@@ -44,7 +44,7 @@ namespace XnaDarts.Screens.GameModeScreens
         /// </summary>
         /// <param name="segment"></param>
         /// <param name="multiplier"></param>
-        private void registerDart(int segment, int multiplier)
+        private void _registerDart(int segment, int multiplier)
         {
             if (Mode.IsEndOfTurn())
             {
@@ -57,7 +57,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
             Mode.RegisterDart(segment, multiplier);
 
-            playDartHitSound(segment, multiplier);
+            _playDartHitSound(segment, multiplier);
 
             if (Mode.IsEndOfTurn())
             {
@@ -65,7 +65,7 @@ namespace XnaDarts.Screens.GameModeScreens
             }
         }
 
-        private void playerChange()
+        private void _playerChange()
         {
             Mode.NextPlayer();
 
@@ -75,7 +75,7 @@ namespace XnaDarts.Screens.GameModeScreens
             }
             else if (Mode.IsFirstThrow())
             {
-                startTurn();
+                _startTurn();
             }
         }
 
@@ -124,7 +124,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         #region SoundHelper
 
-        private void playNewRoundSound()
+        private void _playNewRoundSound()
         {
             if (Mode.IsLastRound())
             {
@@ -136,7 +136,7 @@ namespace XnaDarts.Screens.GameModeScreens
             }
         }
 
-        private static void playDartHitSound(int segment, int multiplier)
+        private static void _playDartHitSound(int segment, int multiplier)
         {
             if (segment == 25)
             {
@@ -179,29 +179,29 @@ namespace XnaDarts.Screens.GameModeScreens
 
             _background = Content.Load<Texture2D>(@"Images\Backgrounds\AbstractBackground"); // XnaDartsGame.Options.Theme
 
-            SerialManager.Instance().OnDartRegistered = registerDart;
+            SerialManager.Instance().OnDartRegistered = _registerDart;
             SerialManager.Instance().OnDartHit = null;
 
             _dartboard = new Dartboard();
             _dartboard.LoadContent(Content);
-            _dartboard.OnSegmentClicked += registerDart;
+            _dartboard.OnSegmentClicked += _registerDart;
             _dartboard.Scale = 0.5f;
 
             _playerChangeScreen = new PlayerChangeScreen("Player Change",
                 TimeSpan.FromSeconds(XnaDartsGame.Options.PlayerChangeTimeout));
             _playerChangeScreen.LoadContent();
-            _playerChangeScreen.OnTimeout += playerChange;
+            _playerChangeScreen.OnTimeout += _playerChange;
 
             _throwDartsScreen = new TimeoutScreen(Mode.CurrentPlayer.Name + " throw darts!", TimeSpan.FromSeconds(3));
             _newRoundTimeoutScreen = new TimeoutScreen("Round 1", TimeSpan.FromSeconds(3));
-            _newRoundTimeoutScreen.OnTimeout += startTurn;
+            _newRoundTimeoutScreen.OnTimeout += _startTurn;
 
             foreach (var drawableGameComponent in GuiComponents)
             {
                 drawableGameComponent.LoadContent(Content);
             }
 
-            startGame();
+            _startGame();
         }
 
         public override void UnloadContent()
@@ -214,7 +214,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         #region Handle Input
 
-        private void pause()
+        private void _pause()
         {
             var pause = new PauseMenuScreen(this);
             XnaDartsGame.ScreenManager.AddScreen(pause);
@@ -227,7 +227,7 @@ namespace XnaDarts.Screens.GameModeScreens
         {
             for (; Mode.CurrentPlayerRound.Darts.Count < GameMode.DartsPerTurn;)
             {
-                registerDart(0, 0);
+                _registerDart(0, 0);
             }
         }
 
@@ -235,7 +235,7 @@ namespace XnaDarts.Screens.GameModeScreens
         {
             if (inputState.MenuCancel)
             {
-                pause();
+                _pause();
             }
 
             if (inputState.IsKeyPressed(Keys.F6))
@@ -261,11 +261,11 @@ namespace XnaDarts.Screens.GameModeScreens
         public virtual void StartRound()
         {
             // Play new round sound
-            playNewRoundSound();
-            showNewRoundMessageScreen();
+            _playNewRoundSound();
+            _showNewRoundMessageScreen();
         }
 
-        private void showNewRoundMessageScreen()
+        private void _showNewRoundMessageScreen()
         {
             _newRoundTimeoutScreen.Text = "Round " + (Mode.CurrentRoundIndex + 1);
             XnaDartsGame.ScreenManager.AddScreen(_newRoundTimeoutScreen);
@@ -275,13 +275,13 @@ namespace XnaDarts.Screens.GameModeScreens
 
         #region StartTurn
 
-        private void startTurn()
+        private void _startTurn()
         {
             XnaDartsGame.SoundManager.PlaySound(SoundCue.ThrowStart);
-            showThrowDartsMessage();
+            _showThrowDartsMessage();
         }
 
-        private void showThrowDartsMessage()
+        private void _showThrowDartsMessage()
         {
             _throwDartsScreen.Text = Mode.CurrentPlayer.Name + " throw darts!";
             XnaDartsGame.ScreenManager.AddScreen(_throwDartsScreen);
@@ -319,7 +319,7 @@ namespace XnaDarts.Screens.GameModeScreens
             leaders.ForEach(p => text += " " + p.Name);
 
             var gameOverScreen = new MessageBoxScreen("Game Over", text, MessageBoxButtons.Ok);
-            gameOverScreen.OnOk += delegate { pause(); };
+            gameOverScreen.OnOk += delegate { _pause(); };
             XnaDartsGame.ScreenManager.AddScreen(gameOverScreen);
         }
 

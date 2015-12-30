@@ -60,7 +60,7 @@ namespace XnaDarts.Gameplay.Modes
                    IsBust();
         }
 
-        private bool isLastPlayerAndEndOfTurnAndSomeoneHasWon()
+        private bool _isLastPlayerAndEndOfTurnAndSomeoneHasWon()
         {
             return IsLastPlayer() &&
                    IsEndOfTurn() &&
@@ -70,11 +70,11 @@ namespace XnaDarts.Gameplay.Modes
         public override bool IsGameOver()
         {
             return base.IsGameOver() ||
-                   isLastPlayerAndEndOfTurnAndSomeoneHasWon() ||
-                   isBustAndIsLastRound();
+                   _isLastPlayerAndEndOfTurnAndSomeoneHasWon() ||
+                   _isBustAndIsLastRound();
         }
 
-        private bool isBustAndIsLastRound()
+        private bool _isBustAndIsLastRound()
         {
             return IsBust() && IsLastRound();
         }

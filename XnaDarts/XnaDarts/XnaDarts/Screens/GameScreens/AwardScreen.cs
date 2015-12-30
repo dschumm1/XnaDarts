@@ -54,7 +54,7 @@ namespace XnaDarts.Screens.GameScreens
             }
         }
 
-        private void play(AwardCue cue)
+        private void _play(AwardCue cue)
         {
             if (!_awards.Keys.Contains(cue))
             {
@@ -86,30 +86,30 @@ namespace XnaDarts.Screens.GameScreens
 
             if (isTonEighty(round))
             {
-                play(AwardCue.TonEighty);
+                _play(AwardCue.TonEighty);
             }
             else if (isThreeInTheBlack(round))
             {
                 //Play award three in the black
-                play(AwardCue.ThreeInTheBlack);
+                _play(AwardCue.ThreeInTheBlack);
             }
             else if (isHatTrick(round))
             {
                 //Play award hattrick!
-                play(AwardCue.HatTrick);
+                _play(AwardCue.HatTrick);
             }
             else if (isHighTon(round))
             {
-                play(AwardCue.HighTon);
+                _play(AwardCue.HighTon);
             }
             else if (isLowTon(round))
             {
                 //Play award low ton!
-                play(AwardCue.LowTon);
+                _play(AwardCue.LowTon);
             }
             else if (isThreeInABed(round))
             {
-                play(AwardCue.ThreeInABed);
+                _play(AwardCue.ThreeInABed);
             }
         }
 
