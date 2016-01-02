@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace XnaDarts.Gameplay.Modes
+namespace XnaDarts.Gameplay.Modes.CountUp
 {
     public class CountUp : GameMode
     {
@@ -18,13 +18,9 @@ namespace XnaDarts.Gameplay.Modes
             get { return "CountUp"; }
         }
 
-        public override int GetScore(Player p)
+        public override int GetScore(Player player)
         {
-            var score = 0; // - Handicap
-
-            score += p.Rounds.Sum(r => GetScore(r));
-
-            return score;
+            return player.Rounds.Sum(round => round.GetScore());
         }
 
         public void SaveScore(int score)

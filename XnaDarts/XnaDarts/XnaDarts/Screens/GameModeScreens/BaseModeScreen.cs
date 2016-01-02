@@ -46,7 +46,7 @@ namespace XnaDarts.Screens.GameModeScreens
         /// <param name="multiplier"></param>
         private void _registerDart(int segment, int multiplier)
         {
-            if (Mode.IsEndOfTurn())
+            if (Mode.IsEndOfTurn)
             {
                 return;
             }
@@ -59,7 +59,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
             _playDartHitSound(segment, multiplier);
 
-            if (Mode.IsEndOfTurn())
+            if (Mode.IsEndOfTurn)
             {
                 HandleEndOfTurn();
             }
@@ -69,11 +69,11 @@ namespace XnaDarts.Screens.GameModeScreens
         {
             Mode.NextPlayer();
 
-            if (Mode.IsFirstPlayer())
+            if (Mode.IsFirstPlayer)
             {
                 StartRound();
             }
-            else if (Mode.IsFirstThrow())
+            else if (Mode.IsFirstThrow)
             {
                 _startTurn();
             }
@@ -126,7 +126,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         private void _playNewRoundSound()
         {
-            if (Mode.IsLastRound())
+            if (Mode.IsLastRound)
             {
                 XnaDartsGame.SoundManager.PlaySound(SoundCue.LastRound);
             }
@@ -136,7 +136,7 @@ namespace XnaDarts.Screens.GameModeScreens
             }
         }
 
-        private static void _playDartHitSound(int segment, int multiplier)
+        private void _playDartHitSound(int segment, int multiplier)
         {
             if (segment == 25)
             {
@@ -293,7 +293,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         protected virtual void HandleEndOfTurn()
         {
-            if (Mode.IsGameOver())
+            if (Mode.IsGameOver)
             {
                 HandleGameOver();
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.Bastard;
 using XnaDarts.Screens.Menus;
 
 namespace XnaDarts.Screens.GameModeScreens

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.Bastard;
 
 namespace XnaDarts.Screens.GameScreens
 {

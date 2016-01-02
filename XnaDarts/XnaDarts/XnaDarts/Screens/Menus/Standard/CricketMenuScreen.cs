@@ -1,5 +1,6 @@
 ﻿using System;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.Cricket;
 using XnaDarts.ScreenManagement;
 using XnaDarts.Screens.GameModeScreens;
 
@@ -23,7 +24,7 @@ namespace XnaDarts.Screens.Menus.Standard
             _meHidden.OnSelected += meHidden_OnSelected;
             _meBack.OnSelected += (sender, args) => CancelScreen();
 
-            MenuItems.AddItems(_meStandard, _meBack); //meCutThroat, meRandom, mePick, meHidden,
+            MenuItems.AddItems(_meStandard, _meCutThroat, _meBack); //meRandom, mePick, meHidden,
         }
 
         private void meHidden_OnSelected(object sender, EventArgs e)
@@ -40,18 +41,22 @@ namespace XnaDarts.Screens.Menus.Standard
 
         private void meCutThroat_OnSelected(object sender, EventArgs e)
         {
+            var screen = new PlayerSelectScreen(4)
+            {
+                OnPlayerSelect =
+                    players => { XnaDartsGame.ScreenManager.AddScreen(new CutThroatCricketModeScreen((new Cricket(players)))); }
+            };
+            XnaDartsGame.ScreenManager.AddScreen(screen);
         }
 
         private void meStandard_OnSelected(object sender, EventArgs e)
         {
-            var screen = new PlayerSelectScreen(2);
-            screen.OnPlayerSelect = meStandard_PlayerSelect;
+            var screen = new PlayerSelectScreen(2)
+            {
+                OnPlayerSelect =
+                    players => { XnaDartsGame.ScreenManager.AddScreen(new CricketModeScreen((new Cricket(players)))); }
+            };
             XnaDartsGame.ScreenManager.AddScreen(screen);
-        }
-
-        private void meStandard_PlayerSelect(int players)
-        {
-            XnaDartsGame.ScreenManager.AddScreen(new CricketModeScreen((new Cricket(players))));
         }
     }
 }

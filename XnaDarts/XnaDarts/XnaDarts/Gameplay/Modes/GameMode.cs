@@ -4,30 +4,19 @@ using Microsoft.Xna.Framework;
 
 namespace XnaDarts.Gameplay.Modes
 {
-    public enum Direction
-    {
-        Asc,
-        Desc
-    }
-
-    /// <summary>
-    ///     This class serves as the base for all GameModes
-    /// </summary>
     public abstract class GameMode
     {
-        public virtual void RegisterDart(int segment, int multiplier)
+        public abstract string Name { get; }
+
+        public void RegisterDart(int segment, int multiplier)
         {
-            //Add the dart
             var dart = new Dart(CurrentPlayer, segment, multiplier);
             CurrentPlayerRound.Darts.Add(dart);
         }
 
-        protected virtual void RemoveDart()
+        private void _removeDart()
         {
-            if (CurrentPlayerRound.Darts.Count > 0)
-            {
-                CurrentPlayerRound.Darts.RemoveAt(CurrentPlayerRound.Darts.Count - 1);
-            }
+            CurrentPlayerRound.Darts.RemoveAt(CurrentPlayerRound.Darts.Count - 1);
         }
 
         public void Unthrow()
@@ -35,38 +24,26 @@ namespace XnaDarts.Gameplay.Modes
             //Remove last dart of the current players throws
             if (CurrentPlayerRound.Darts.Count > 0)
             {
-                RemoveDart();
+                _removeDart();
             }
             //Back up one player and remove dart
             else if (CurrentPlayerIndex > 0)
             {
                 CurrentPlayerIndex--;
-                RemoveDart();
+                _removeDart();
             }
             //Back up one round
             else if (CurrentRoundIndex > 0)
             {
                 CurrentRoundIndex--;
                 CurrentPlayerIndex = Players.Count - 1;
-                RemoveDart();
+                _removeDart();
             }
         }
 
-        public virtual bool IsEndOfTurn()
-        {
-            return IsLastThrow();
-        }
-
-        public virtual bool IsGameOver()
-        {
-            return IsLastRound() && IsLastPlayer() && IsEndOfTurn();
-        }
-
-        #region Helper Methods
-
         public void NextPlayer()
         {
-            if (!IsLastPlayer())
+            if (!IsLastPlayer)
             {
                 CurrentPlayerIndex++;
             }
@@ -77,98 +54,14 @@ namespace XnaDarts.Gameplay.Modes
             }
         }
 
-        public bool IsFirstPlayer()
-        {
-            return CurrentPlayerIndex == 0;
-        }
-
-        public bool IsLastPlayer()
-        {
-            return CurrentPlayerIndex == Players.Count - 1;
-        }
-
-        public bool IsLastRound()
-        {
-            return CurrentRoundIndex == MaxRounds - 1;
-        }
-
-        public bool IsFirstThrow()
-        {
-            return CurrentPlayerRound.Darts.Count == 0;
-        }
-
-        public bool IsLastThrow()
-        {
-            return CurrentPlayerRound.Darts.Count == DartsPerTurn;
-        }
-
-        #endregion
-
-        #region Scoring
-
-        public abstract int GetScore(Player player);
-
-        public virtual int GetScore(Round round)
-        {
-            return round.GetScore();
-        }
-
-        public virtual int GetScore(Dart dart)
-        {
-            return dart.GetScore();
-        }
-
-        public virtual List<Player> GetLeaders()
-        {
-            var leaders = Players.GroupBy(GetScore).OrderBy(g => g.Key);
-            if (ScoringDirection == Direction.Asc)
-            {
-                return leaders.First().ToList();
-            }
-            return leaders.Last().ToList();
-        }
-
-        #endregion
-
-        #region Fields and Properties
-
-        public int CurrentPlayerIndex { get; private set; }
-
-        public int CurrentRoundIndex { get; private set; }
-        public const int DartsPerTurn = 3;
-        public int MaxRounds = 8;
-
-        public abstract string Name { get; }
-
-        public Round CurrentPlayerRound
-        {
-            get { return CurrentPlayer.Rounds[CurrentRoundIndex]; }
-        }
-
-        public Player CurrentPlayer
-        {
-            get { return Players[CurrentPlayerIndex]; }
-        }
-
-        public Direction ScoringDirection = Direction.Desc;
-        public List<Player> Players = new List<Player>();
-
-        public Color GetPlayerColor(Player player)
-        {
-            var index = Players.FindIndex(p => p == player);
-            return XnaDartsGame.Options.PlayerColors[index%XnaDartsGame.Options.PlayerColors.Length];
-        }
-
-        #endregion
-
         #region Constructor
 
-        protected GameMode(int players)
+        public GameMode(int players)
         {
-            initializePlayersAndRounds(players);
+            _initializePlayersAndRounds(players);
         }
 
-        private void initializePlayersAndRounds(int players)
+        private void _initializePlayersAndRounds(int players)
         {
             for (var i = 0; i < players; i++)
             {
@@ -180,6 +73,81 @@ namespace XnaDarts.Gameplay.Modes
                     Players[i].Rounds.Add(new Round());
                 }
             }
+        }
+
+        #endregion
+
+        #region Fields and Properties
+
+        public virtual int GetScore(Player player)
+        {
+            return player.GetScore();
+        }
+
+        public virtual List<Player> GetLeaders()
+        {
+            var leaders = Players.GroupBy(GetScore).OrderBy(group => group.Key);
+            return leaders.Last().ToList();
+        }
+
+        public virtual bool IsGameOver
+        {
+            get { return IsLastRound && IsLastPlayer && IsLastThrow; }
+        }
+
+        public virtual bool IsEndOfTurn
+        {
+            get { return IsLastThrow; }
+        }
+
+        public bool IsFirstPlayer
+        {
+            get { return CurrentPlayerIndex == 0; }
+        }
+
+        public bool IsLastPlayer
+        {
+            get { return CurrentPlayerIndex == Players.Count - 1; }
+        }
+
+        public bool IsLastRound
+        {
+            get { return CurrentRoundIndex == MaxRounds - 1; }
+        }
+
+        public bool IsFirstThrow
+        {
+            get { return CurrentPlayerRound.Darts.Count == 0; }
+        }
+
+        public bool IsLastThrow
+        {
+            get { return CurrentPlayerRound.Darts.Count == DartsPerTurn; }
+        }
+
+
+        public int CurrentPlayerIndex { get; private set; }
+
+        public int CurrentRoundIndex { get; private set; }
+        public const int DartsPerTurn = 3;
+        public int MaxRounds = 8;
+
+        public Round CurrentPlayerRound
+        {
+            get { return CurrentPlayer.Rounds[CurrentRoundIndex]; }
+        }
+
+        public Player CurrentPlayer
+        {
+            get { return Players[CurrentPlayerIndex]; }
+        }
+
+        public List<Player> Players = new List<Player>();
+
+        public Color GetPlayerColor(Player player)
+        {
+            var index = Players.FindIndex(p => p == player);
+            return XnaDartsGame.Options.PlayerColors[index%XnaDartsGame.Options.PlayerColors.Length];
         }
 
         #endregion

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.ZeroOne;
 
 namespace XnaDartsTests
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.ZeroOne;
 using XnaDarts.ScreenManagement;
 using XnaDarts.Screens.GameModeScreens.Components;
 using XnaDarts.Screens.GameScreens;
@@ -9,8 +9,8 @@ namespace XnaDarts.Screens.GameModeScreens
 {
     public class ZeroOneModeScreen : BaseModeScreen
     {
-        private TimeoutScreen _bustScreen;
         private AwardScreen _awardScreen;
+        private TimeoutScreen _bustScreen;
 
         public ZeroOneModeScreen(ZeroOne zeroOne) : base(zeroOne)
         {
@@ -43,7 +43,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         private void _bustScreenTimeout()
         {
-            if (!Mode.IsGameOver())
+            if (!Mode.IsGameOver)
             {
                 ShowPlayerChangeScreen();
             }
@@ -63,7 +63,7 @@ namespace XnaDarts.Screens.GameModeScreens
             {
                 base.HandleEndOfTurn();
 
-                if (Mode.IsLastThrow())
+                if (Mode.IsLastThrow)
                 {
                     _awardScreen.PlayAwards(Mode.CurrentPlayerRound);
                 }

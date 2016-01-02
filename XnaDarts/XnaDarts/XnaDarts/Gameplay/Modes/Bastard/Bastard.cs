@@ -3,37 +3,11 @@ using System.Linq;
 using XnaDarts.Screens.GameScreens;
 using XnaDarts.Screens.Menus;
 
-namespace XnaDarts.Gameplay.Modes
+namespace XnaDarts.Gameplay.Modes.Bastard
 {
-    public class BastardHit
-    {
-        public Dart Dart;
-        public int Round;
-        public Player SegmentOwner;
-        public Player ThrownBy;
-
-        public BastardHit(Dart dart, Player thrownBy, Player segmentOwner, int round)
-        {
-            Dart = dart;
-            ThrownBy = thrownBy;
-            SegmentOwner = segmentOwner;
-            Round = round;
-        }
-    }
-
     public class Bastard : GameMode
     {
-        public override int GetScore(Player player)
-        {
-            return calculatePlayerScores()[player];
-        }
-
-        public override int GetScore(Dart dart)
-        {
-            return dart.Multiplier;
-        }
-
-        private Dictionary<Player, int> calculatePlayerScores()
+        private Dictionary<Player, int> _calculatePlayerScores()
         {
             var playerScores = new Dictionary<Player, int>();
             Players.ForEach(x => playerScores.Add(x, StartScore));
@@ -78,6 +52,11 @@ namespace XnaDarts.Gameplay.Modes
         private BastardSummaryScreen _summaryScreen;
         public int StartScore = 10;
 
+        public override int GetScore(Player player)
+        {
+            return _calculatePlayerScores()[player];
+        }
+
         public override string Name
         {
             get { return "Bastard"; }
@@ -92,13 +71,11 @@ namespace XnaDarts.Gameplay.Modes
         public Bastard(int players)
             : base(players)
         {
-            setupSegments(players);
+            _setupSegments(players);
             _summaryScreen = new BastardSummaryScreen(this);
-
-            ScoringDirection = Direction.Asc;
         }
 
-        private void setupSegments(int players)
+        private void _setupSegments(int players)
         {
             var segmentsPerPlayer = 20/players;
 

@@ -1,6 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.Cricket;
 
 namespace XnaDartsTests
 {

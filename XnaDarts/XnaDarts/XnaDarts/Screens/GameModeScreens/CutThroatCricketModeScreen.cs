@@ -4,9 +4,9 @@ using XnaDarts.Screens.GameModeScreens.Components;
 
 namespace XnaDarts.Screens.GameModeScreens
 {
-    public class CricketModeScreen : BaseModeScreen
+    public class CutThroatCricketModeScreen : BaseModeScreen
     {
-        public CricketModeScreen(Cricket cricket)
+        public CutThroatCricketModeScreen(Cricket cricket)
             : base(cricket)
         {
             GuiComponents.Add(new CricketMarksComponent(cricket));

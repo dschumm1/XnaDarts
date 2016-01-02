@@ -30,7 +30,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             {
                 var round = _mode.CurrentPlayer.Rounds[i];
 
-                var roundScore = _mode.GetScore(round);
+                var roundScore = round.GetScore();
                 var roundScoreColor = getRoundScoreColor(round);
 
                 if (i == _mode.CurrentRoundIndex)
@@ -55,7 +55,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
         private Color getRoundScoreColor(Round round)
         {
-            var score = _mode.GetScore(round);
+            var score = round.GetScore();
 
             if (score >= 100)
             {
