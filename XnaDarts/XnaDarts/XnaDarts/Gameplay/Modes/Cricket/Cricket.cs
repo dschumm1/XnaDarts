@@ -7,7 +7,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
     public class Cricket : GameMode
     {
         private const int SegmentPrice = 3;
-        private readonly List<CricketHit> _cricketHits = new List<CricketHit>();
+        protected readonly List<CricketHit> CricketHits = new List<CricketHit>();
 
         public override bool IsEndOfTurn
         {
@@ -31,7 +31,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
 
         protected override void _removeDart()
         {
-            _cricketHits.RemoveAll(hit => hit.Dart == CurrentPlayerRound.Darts.Last());
+            CricketHits.RemoveAll(hit => hit.Dart == CurrentPlayerRound.Darts.Last());
             base._removeDart();
         }
 
@@ -85,27 +85,18 @@ namespace XnaDarts.Gameplay.Modes.Cricket
                 }
 
 
-                _cricketHits.Add(new CricketHit(dart, marks, score));
+                CricketHits.Add(new CricketHit(dart, marks, score));
             }
         }
 
         public List<Player> PlayersWhoOwnsSegment(int segment)
         {
             return Players.Where(player => GetScoredMarks(player, segment) >= SegmentPrice).ToList();
-
-            //var segmentHits = _cricketHits.Where(cricketHit => cricketHit.Dart.Segment == segment);
-
-            //var playerHitGroups = segmentHits.GroupBy(hit => hit.Dart.Player);
-
-            //var playersWhoOwnsSegment =
-            //    playerHitGroups.Where(hits => hits.Sum(hit => hit.Marks) >= 3).Select(hitGroup => hitGroup.Key).ToList();
-
-            //return playersWhoOwnsSegment;
         }
 
         public override int GetScore(Player player)
         {
-            var playerHits = _cricketHits.Where(hit => hit.Dart.Player == player);
+            var playerHits = CricketHits.Where(hit => hit.Dart.Player == player);
             return playerHits.Sum(hit => hit.Score);
         }
 
@@ -121,7 +112,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
 
         public int GetScoredMarks(Dart dart)
         {
-            var hit = _cricketHits.FirstOrDefault(cricketHit => cricketHit.Dart == dart);
+            var hit = CricketHits.FirstOrDefault(cricketHit => cricketHit.Dart == dart);
             if (hit == null)
             {
                 return 0;
@@ -132,13 +123,13 @@ namespace XnaDarts.Gameplay.Modes.Cricket
         public int GetScoredMarks(Player player, int segment)
         {
             return
-                _cricketHits.Where(cricketHit => cricketHit.Dart.Player == player && cricketHit.Dart.Segment == segment)
+                CricketHits.Where(cricketHit => cricketHit.Dart.Player == player && cricketHit.Dart.Segment == segment)
                     .Sum(hit => hit.Marks);
         }
 
         public bool IsSegmentOpen(int segment)
         {
-            var segmentHits = _cricketHits.Where(cricketHit => cricketHit.Dart.Segment == segment);
+            var segmentHits = CricketHits.Where(cricketHit => cricketHit.Dart.Segment == segment);
 
             var playerHits = segmentHits.GroupBy(hit => hit.Dart.Player);
 
@@ -149,7 +140,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
             return playerHitSumCount != Players.Count;
         }
 
-        private class CricketHit
+        protected class CricketHit
         {
             public CricketHit(Dart dart, int marks, int score)
             {

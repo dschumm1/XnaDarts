@@ -41,10 +41,10 @@ namespace XnaDarts.Screens.Menus.Standard
 
         private void meCutThroat_OnSelected(object sender, EventArgs e)
         {
-            var screen = new PlayerSelectScreen(4)
+            var screen = new PlayerSelectScreen(2, 4)
             {
                 OnPlayerSelect =
-                    players => { XnaDartsGame.ScreenManager.AddScreen(new CutThroatCricketModeScreen((new Cricket(players)))); }
+                    players => { XnaDartsGame.ScreenManager.AddScreen(new CutThroatCricketModeScreen((new CutThroatCricket(players)))); }
             };
             XnaDartsGame.ScreenManager.AddScreen(screen);
         }
