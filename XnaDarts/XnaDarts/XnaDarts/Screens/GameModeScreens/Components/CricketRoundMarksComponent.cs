@@ -58,7 +58,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
         private void _drawDartMarks(SpriteBatch spriteBatch, Dart dart)
         {
-            var scoredMarks = _mode.GetScoredMarks(dart.Player, dart.Segment);
+            var scoredMarks = _mode.GetScoredMarks(dart);
             var markTexture = _markTextures[Math.Min(scoredMarks, 3)];
 
             spriteBatch.Draw(markTexture, _tempPosition, null, Color.White, 0, _offset, Scale, SpriteEffects.None, 0);

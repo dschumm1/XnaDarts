@@ -13,6 +13,10 @@ namespace XnaDarts.Gameplay
 
         public int GetScore()
         {
+            if (Segment == 25)
+            {
+                return Segment*2;
+            }
             return Segment*Multiplier;
         }
 

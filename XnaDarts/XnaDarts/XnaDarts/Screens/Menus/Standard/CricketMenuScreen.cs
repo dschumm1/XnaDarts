@@ -51,7 +51,7 @@ namespace XnaDarts.Screens.Menus.Standard
 
         private void meStandard_OnSelected(object sender, EventArgs e)
         {
-            var screen = new PlayerSelectScreen(2)
+            var screen = new PlayerSelectScreen(2, 4)
             {
                 OnPlayerSelect =
                     players => { XnaDartsGame.ScreenManager.AddScreen(new CricketModeScreen((new Cricket(players)))); }

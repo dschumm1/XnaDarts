@@ -8,13 +8,13 @@ namespace XnaDarts.Gameplay.Modes
     {
         public abstract string Name { get; }
 
-        public void RegisterDart(int segment, int multiplier)
+        public virtual void RegisterDart(int segment, int multiplier)
         {
             var dart = new Dart(CurrentPlayer, segment, multiplier);
             CurrentPlayerRound.Darts.Add(dart);
         }
 
-        private void _removeDart()
+        protected virtual void _removeDart()
         {
             CurrentPlayerRound.Darts.RemoveAt(CurrentPlayerRound.Darts.Count - 1);
         }

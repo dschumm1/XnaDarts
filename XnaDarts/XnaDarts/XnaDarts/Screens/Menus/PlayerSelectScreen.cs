@@ -6,29 +6,29 @@ namespace XnaDarts.Screens.Menus
 {
     public class PlayerSelectScreen : MenuScreen
     {
-        public delegate void PlayerSelectDelegate(int players);
+        public delegate void PlayerSelectDelegate(int selectedPlayers);
 
         public PlayerSelectDelegate OnPlayerSelect;
 
         public PlayerSelectScreen(int maxPlayers)
             : base("Select Number of Players")
         {
-            initialize(1, maxPlayers);
+            _initialize(1, maxPlayers);
         }
 
         public PlayerSelectScreen(int minPlayers, int maxPlayers)
             : base("Select Number of Players")
         {
-            initialize(minPlayers, maxPlayers);
+            _initialize(minPlayers, maxPlayers);
         }
 
         public PlayerSelectScreen(int[] players)
             : base("Select Number of Players")
         {
-            initialize(players);
+            _initialize(players);
         }
 
-        private void initialize(int[] players)
+        private void _initialize(int[] players)
         {
             foreach (var i in players)
             {
@@ -42,9 +42,9 @@ namespace XnaDarts.Screens.Menus
             MenuItems.Items.Add(back);
         }
 
-        private void initialize(int minPlayers, int maxPlayers)
+        private void _initialize(int minPlayers, int maxPlayers)
         {
-            initialize(Enumerable.Range(minPlayers, maxPlayers - minPlayers + 1).ToArray());
+            _initialize(Enumerable.Range(minPlayers, maxPlayers - minPlayers + 1).ToArray());
         }
 
         private void Entry_OnSelected(object sender, EventArgs e)
