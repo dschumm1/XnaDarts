@@ -110,7 +110,6 @@
     <Compile Include="Screens\GameModeScreens\Components\RoundScoresComponent.cs" />
     <Compile Include="Screens\GameModeScreens\CountUpModeScreen.cs" />
     <Compile Include="Screens\GameModeScreens\CricketModeScreen.cs" />
-    <Compile Include="Screens\GameModeScreens\CutThroatCricketModeScreen.cs" />
     <Compile Include="Screens\GameModeScreens\ZeroOneModeScreen.cs" />
     <Compile Include="Screens\GameScreens\AwardScreen.cs" />
     <Compile Include="Screens\GameScreens\BastardSummaryScreen.cs" />

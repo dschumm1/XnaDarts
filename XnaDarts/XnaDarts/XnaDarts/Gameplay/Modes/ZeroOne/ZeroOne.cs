@@ -34,20 +34,25 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             }
         }
 
-        public bool IsBust()
+        public override int GetScore(Player player)
         {
             var score = StartScore; // TODO: Maybe add handicap
 
             for (var i = 0; i < CurrentRoundIndex; i++)
             {
-                var roundScore = CurrentPlayer.Rounds[i].GetScore();
+                var roundScore = player.Rounds[i].GetScore();
                 if (score - roundScore >= 0) // Don't count the round if the player went bust
                 {
                     score -= roundScore;
                 }
             }
 
-            return score - CurrentPlayerRound.GetScore() < 0;
+            return score - player.Rounds[CurrentRoundIndex].GetScore();
+        }
+
+        public bool IsBust()
+        {
+            return GetScore(CurrentPlayer) < 0;
         }
 
         public bool HasWon()
@@ -60,11 +65,6 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             return IsLastPlayer &&
                    IsEndOfTurn &&
                    Players.Any(p => GetScore(p) == 0);
-        }
-
-        public override int GetScore(Player player)
-        {
-            return StartScore - player.GetScore();
         }
 
         private bool _isBustAndIsLastRound()

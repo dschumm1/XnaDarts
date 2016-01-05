@@ -62,5 +62,20 @@ namespace XnaDartsTests
             myZeroOne.RegisterDart(0, 0);
             Assert.IsTrue(myZeroOne.IsGameOver);
         }
+
+        [Test]
+        public void SecondRoundScore()
+        {
+            var myZeroOne = new ZeroOne(1, 301);
+            Assert.IsFalse(myZeroOne.IsEndOfTurn);
+            Assert.IsFalse(myZeroOne.IsGameOver);
+            myZeroOne.RegisterDart(20, 3);
+            myZeroOne.RegisterDart(20, 3);
+            myZeroOne.RegisterDart(20, 3);
+            Assert.IsTrue(myZeroOne.IsEndOfTurn);
+            Assert.IsFalse(myZeroOne.IsGameOver);
+            myZeroOne.NextPlayer();
+            Assert.AreEqual(121, myZeroOne.GetScore(myZeroOne.CurrentPlayer));
+        }
     }
 }

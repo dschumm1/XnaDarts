@@ -44,7 +44,7 @@ namespace XnaDarts.Screens.Menus.Standard
             var screen = new PlayerSelectScreen(2, 4)
             {
                 OnPlayerSelect =
-                    players => { XnaDartsGame.ScreenManager.AddScreen(new CutThroatCricketModeScreen((new CutThroatCricket(players)))); }
+                    players => { XnaDartsGame.ScreenManager.AddScreen(new CricketModeScreen((new CutThroatCricket(players)))); }
             };
             XnaDartsGame.ScreenManager.AddScreen(screen);
         }

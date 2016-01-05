@@ -68,7 +68,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
                         {
                             score = dart.GetScore();
                         }
-                        else if (costToOpen - dart.Multiplier <= 0)
+                        else if (costToOpen - dart.Multiplier < 0)
                         {
                             if (segment != 25)
                             {
@@ -102,6 +102,16 @@ namespace XnaDarts.Gameplay.Modes.Cricket
 
         private bool _leaderOwnsAllOpenSegments()
         {
+            if (Players.Count == 2)
+            {
+                var leaders = GetLeaders();
+                if (leaders.Count == 1)
+                {
+                    var openSegments = _segments.Where(IsSegmentOpen);
+                    return openSegments.All(segment => PlayersWhoOwnsSegment(segment).Contains(leaders.First()));
+                }
+            }
+
             return false;
         }
 
@@ -161,6 +171,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
         public Cricket(int players)
             : base(players)
         {
+            MaxRounds = 15;
         }
 
         public int[] Segments
