@@ -12,10 +12,12 @@ namespace XnaDarts.Screens.GameModeScreens.Components
     public class RoundScoresComponent : IDrawableGameComponent
     {
         private readonly GameMode _mode;
+        private Vector2 _position;
 
         public RoundScoresComponent(GameMode mode)
         {
             _mode = mode;
+            _position = new Vector2(20, XnaDartsGame.Viewport.Height*0.33f);
         }
 
         /// <summary>
@@ -24,13 +26,14 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            var position = new Vector2(20, XnaDartsGame.Viewport.Height*0.33f);
             var font = ScreenManager.Trebuchet24;
 
+            var tempPosition = _position;
             var maxRows = 5;
             var startIndex = Math.Max(0, 1 + _mode.CurrentRoundIndex - maxRows);
+            var endIndex = Math.Min(_mode.MaxRounds, startIndex + maxRows);
 
-            for (var i = startIndex; i < Math.Min(_mode.MaxRounds, startIndex + maxRows); i++)
+            for (var i = startIndex; i < endIndex; i++)
             {
                 var round = _mode.CurrentPlayer.Rounds[i];
 
@@ -40,16 +43,16 @@ namespace XnaDarts.Screens.GameModeScreens.Components
                 if (i == _mode.CurrentRoundIndex)
                 {
                     roundScoreColor = Color.Yellow;
-                        //Color.Lerp(Color.LightYellow, Color.Yellow, (float) ((Math.Sin(_mode._elapsedTime*1.0f/500f) + 1.0f)/2.0f));
+                    //Color.Lerp(Color.LightYellow, Color.Yellow, (float) ((Math.Sin(_mode._elapsedTime*1.0f/500f) + 1.0f)/2.0f));
                 }
                 else if (i > _mode.CurrentRoundIndex)
                 {
                     roundScoreColor = Color.White*0.33f;
                 }
 
-                var text = "R" + (i + 1) + "." + roundScore;
-                TextBlock.DrawShadowed(spriteBatch, font, text, roundScoreColor, position);
-                position.Y += font.LineSpacing;
+                var text = "R" + (i + 1) + ". " + roundScore;
+                TextBlock.DrawShadowed(spriteBatch, font, text, roundScoreColor, tempPosition);
+                tempPosition.Y += font.LineSpacing;
             }
         }
 

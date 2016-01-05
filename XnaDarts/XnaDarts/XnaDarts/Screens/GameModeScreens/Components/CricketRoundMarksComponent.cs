@@ -32,8 +32,9 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
             var maxRows = 5;
             var startIndex = Math.Max(0, 1 + _mode.CurrentRoundIndex - maxRows);
+            var endIndex = Math.Min(_mode.MaxRounds, startIndex + maxRows);
 
-            for (var i = startIndex; i < Math.Min(_mode.MaxRounds, startIndex + maxRows); i++)
+            for (var i = startIndex; i < endIndex; i++)
             {
                 var color = Color.White;
                 if (i == _mode.CurrentRoundIndex)
