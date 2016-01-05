@@ -66,18 +66,11 @@ namespace XnaDarts.Gameplay.Modes.Cricket
 
                         if (currentPlayerOwnsSegment)
                         {
-                            score = dart.GetScore();
+                            score = dart.Segment*dart.Multiplier;
                         }
                         else if (costToOpen - dart.Multiplier < 0)
                         {
-                            if (segment != 25)
-                            {
-                                score = dart.Segment*(dart.Multiplier - costToOpen);
-                            }
-                            else
-                            {
-                                score = 50;
-                            }
+                            score = dart.Segment*(dart.Multiplier - costToOpen);
                         }
 
                         marks = dart.Multiplier;

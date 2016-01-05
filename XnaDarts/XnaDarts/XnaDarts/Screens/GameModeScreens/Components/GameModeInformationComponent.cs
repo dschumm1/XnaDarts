@@ -22,12 +22,12 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            drawGameModeName(spriteBatch);
-            drawRoundNumbers(spriteBatch);
-            drawCurrentPlayerName(spriteBatch);
+            _drawGameModeName(spriteBatch);
+            //_drawRoundNumbers(spriteBatch);
+            _drawCurrentPlayerName(spriteBatch);
         }
 
-        private void drawCurrentPlayerName(SpriteBatch spriteBatch)
+        private void _drawCurrentPlayerName(SpriteBatch spriteBatch)
         {
             var position = new Vector2(20, 200);
             var bigFont = ScreenManager.Trebuchet32;
@@ -37,7 +37,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             position.Y += bigFont.LineSpacing;
         }
 
-        private void drawRoundNumbers(SpriteBatch spriteBatch)
+        private void _drawRoundNumbers(SpriteBatch spriteBatch)
         {
             var position = new Vector2(20, 260.0f);
             var smallFont = ScreenManager.Trebuchet22;
@@ -52,7 +52,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             position.Y += bigFont.LineSpacing;
         }
 
-        private void drawGameModeName(SpriteBatch spriteBatch)
+        private void _drawGameModeName(SpriteBatch spriteBatch)
         {
             var position = Vector2.One*20.0f;
             var smallFont = ScreenManager.Trebuchet22;

@@ -58,20 +58,32 @@ namespace XnaDarts.Gameplay.Modes
 
         public GameMode(int players)
         {
-            _initializePlayersAndRounds(players);
+            _initializePlayers(players);
+            _initializeRounds();
         }
 
-        private void _initializePlayersAndRounds(int players)
+        private void _initializeRounds()
+        {
+            foreach (var player in Players)
+            {
+                for (var i = player.Rounds.Count - 1; i >= MaxRounds; i--)
+                {
+                    player.Rounds.RemoveAt(i);
+                }
+
+                for (var j = player.Rounds.Count; j < MaxRounds; j++)
+                {
+                    player.Rounds.Add(new Round());
+                }
+            }
+        }
+
+        private void _initializePlayers(int players)
         {
             for (var i = 0; i < players; i++)
             {
                 var p = new Player("Player " + (i + 1));
                 Players.Add(p);
-
-                for (var j = 0; j < MaxRounds; j++)
-                {
-                    Players[i].Rounds.Add(new Round());
-                }
             }
         }
 
@@ -84,10 +96,16 @@ namespace XnaDarts.Gameplay.Modes
             return player.GetScore();
         }
 
+        protected bool HighscoreToWin = true;
+
         public virtual List<Player> GetLeaders()
         {
             var leaders = Players.GroupBy(GetScore).OrderBy(group => group.Key);
-            return leaders.Last().ToList();
+            if (HighscoreToWin)
+            {
+                return leaders.Last().ToList();
+            }
+            return leaders.First().ToList();
         }
 
         public virtual bool IsGameOver
@@ -130,7 +148,16 @@ namespace XnaDarts.Gameplay.Modes
 
         public int CurrentRoundIndex { get; private set; }
         public const int DartsPerTurn = 3;
-        public int MaxRounds = 8;
+
+        public int MaxRounds
+        {
+            get { return _maxRounds; }
+            set
+            {
+                _maxRounds = value;
+                _initializeRounds();
+            }
+        }
 
         public Round CurrentPlayerRound
         {
@@ -143,6 +170,7 @@ namespace XnaDarts.Gameplay.Modes
         }
 
         public List<Player> Players = new List<Player>();
+        private int _maxRounds = 8;
 
         public Color GetPlayerColor(Player player)
         {

@@ -73,6 +73,7 @@ namespace XnaDarts.Gameplay.Modes.Bastard
         {
             _setupSegments(players);
             _summaryScreen = new BastardSummaryScreen(this);
+            HighscoreToWin = false;
         }
 
         private void _setupSegments(int players)

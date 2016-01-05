@@ -45,7 +45,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
                 var text = "R" + (i + 1) + "." + roundScore;
                 TextBlock.DrawShadowed(spriteBatch, font, text, roundScoreColor, position);
-                position.Y += font.LineSpacing*0.8f;
+                position.Y += font.LineSpacing;
             }
         }
 

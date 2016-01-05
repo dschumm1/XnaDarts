@@ -6,6 +6,7 @@ namespace XnaDarts.Gameplay.Modes.Cricket
     {
         public CutThroatCricket(int players) : base(players)
         {
+            HighscoreToWin = false;
         }
 
         public override int GetScore(Player player)

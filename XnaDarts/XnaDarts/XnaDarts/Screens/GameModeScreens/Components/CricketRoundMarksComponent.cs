@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using XnaDarts.Gameplay;
 using XnaDarts.Gameplay.Modes.Cricket;
 using XnaDarts.ScreenManagement;
+using XnaDarts.Screens.Menus;
 
 namespace XnaDarts.Screens.GameModeScreens.Components
 {
@@ -22,14 +23,32 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         public CricketRoundMarksComponent(Cricket mode)
         {
             _mode = mode;
-            _position = new Vector2(20, XnaDartsGame.Viewport.Height*0.4f);
+            _position = new Vector2(20, XnaDartsGame.Viewport.Height*0.25f);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             _tempPosition = _position;
-            foreach (var round in _mode.CurrentPlayer.Rounds)
+            for (var i = 0; i < _mode.CurrentPlayer.Rounds.Count; i++)
             {
+                var color = Color.White;
+                if (i == _mode.CurrentRoundIndex)
+                {
+                    color = Color.Yellow;
+                }
+                else if (i > _mode.CurrentRoundIndex)
+                {
+                    color *= 0.33f;
+                }
+
+                var round = _mode.CurrentPlayer.Rounds[i];
+                var text = "R" + (i + 1) + ". ";
+                var font = ScreenManager.Trebuchet24;
+                var textSize = font.MeasureString(text);
+                TextBlock.DrawShadowed(spriteBatch, font, text, color,
+                    _tempPosition + new Vector2(0, -textSize.Y*0.225f));
+                _tempPosition.X += font.MeasureString(text).X;
+
                 _drawRoundMarks(spriteBatch, round);
                 _tempPosition.X = _position.X;
                 _tempPosition.Y += _font.LineSpacing;

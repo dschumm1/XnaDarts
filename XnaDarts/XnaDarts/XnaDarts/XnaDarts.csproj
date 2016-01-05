@@ -121,6 +121,7 @@
     <Compile Include="Screens\Menus\HelpMenuScreen.cs" />
     <Compile Include="Screens\Menus\MainMenuScreen.cs" />
     <Compile Include="Screens\Menus\Margin.cs" />
+    <Compile Include="Screens\Menus\ModeOptionsMenuScreen.cs" />
     <Compile Include="Screens\Menus\OptionsMenuScreen.cs" />
     <Compile Include="Screens\Menus\Party\PartyMenuScreen.cs" />
     <Compile Include="Screens\Menus\PauseMenuScreen.cs" />
