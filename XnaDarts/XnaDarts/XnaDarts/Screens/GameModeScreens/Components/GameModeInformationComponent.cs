@@ -23,7 +23,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         public void Draw(SpriteBatch spriteBatch)
         {
             _drawGameModeName(spriteBatch);
-            //_drawRoundNumbers(spriteBatch);
+            _drawRoundNumbers(spriteBatch);
             _drawCurrentPlayerName(spriteBatch);
         }
 
@@ -41,15 +41,14 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         {
             var position = new Vector2(20, 260.0f);
             var smallFont = ScreenManager.Trebuchet22;
-            var bigFont = ScreenManager.Trebuchet32;
 
-            var text = "Round:";
+            var text = "Round: ";
             TextBlock.DrawShadowed(spriteBatch, smallFont, text, Color.LightBlue, position);
-            position.Y += smallFont.LineSpacing;
+            position.X += smallFont.MeasureString(text).X;
 
             text = (_mode.CurrentRoundIndex + 1) + "/" + _mode.MaxRounds;
-            TextBlock.DrawShadowed(spriteBatch, bigFont, text, Color.White, position);
-            position.Y += bigFont.LineSpacing;
+            TextBlock.DrawShadowed(spriteBatch, smallFont, text, Color.White, position);
+            position.Y += smallFont.LineSpacing;
         }
 
         private void _drawGameModeName(SpriteBatch spriteBatch)

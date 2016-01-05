@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +27,10 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             var position = new Vector2(20, XnaDartsGame.Viewport.Height*0.33f);
             var font = ScreenManager.Trebuchet24;
 
-            for (var i = 0; i < _mode.CurrentPlayer.Rounds.Count; i++)
+            var maxRows = 5;
+            var startIndex = Math.Max(0, 1 + _mode.CurrentRoundIndex - maxRows);
+
+            for (var i = startIndex; i < Math.Min(_mode.MaxRounds, startIndex + maxRows); i++)
             {
                 var round = _mode.CurrentPlayer.Rounds[i];
 
