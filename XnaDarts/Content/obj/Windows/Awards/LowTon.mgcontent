@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/marpe/Development/XnaDarts/XnaDarts/Content/Awards/LowTon.wmv</SourceFile>
+  <SourceTime>2015-10-27T19:16:18.2897574+01:00</SourceTime>
+  <DestFile>C:/Users/marpe/Development/XnaDarts/XnaDarts/Content/bin/Windows/Awards/LowTon.xnb</DestFile>
+  <DestTime>2016-02-08T21:14:04.4603767+01:00</DestTime>
+  <Importer>WmvImporter</Importer>
+  <ImporterTime>2016-02-08T02:03:10+01:00</ImporterTime>
+  <Processor>VideoProcessor</Processor>
+  <ProcessorTime>2016-02-08T02:03:10+01:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>C:/Users/marpe/Development/XnaDarts/XnaDarts/Content/bin/Windows/Awards/LowTon.wmv</string>
+  </BuildOutput>
+</PipelineBuildEvent>
