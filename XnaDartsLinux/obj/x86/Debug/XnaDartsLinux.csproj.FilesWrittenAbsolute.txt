@@ -1,0 +1,12 @@
+/home/marpe/dev/XnaDarts/XnaDartsLinux/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/SDL.dll
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/SDL_mixer.dll
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/Tao.Sdl.dll.config
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/XnaDartsLinux.exe.config
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/XnaDartsLinux.exe.mdb
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/XnaDartsLinux.exe
+/home/marpe/dev/XnaDarts/XnaDartsLinux/obj/x86/Debug/XnaDartsLinux.exe
+/home/marpe/dev/XnaDarts/XnaDartsLinux/obj/x86/Debug/XnaDartsLinux.exe.mdb
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/XnaDarts.dll
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/XnaDarts.dll.mdb
+/home/marpe/dev/XnaDarts/XnaDartsLinux/bin/Debug/OpenTK.dll.config

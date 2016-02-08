@@ -6,32 +6,31 @@ using Microsoft.Xna.Framework;
 
 namespace XnaDarts
 {
-    [Serializable]
-    public class Resolution
-    {
-        public int Height;
-        public int Width;
+	[Serializable]
+	public class Resolution
+	{
+		public int Height;
+		public int Width;
 
-        public Resolution(int width, int height)
-        {
-            Width = width;
-            Height = height;
-        }
+		public Resolution (int width, int height)
+		{
+			Width = width;
+			Height = height;
+		}
 
-        public override string ToString()
-        {
-            return Width + ", " + Height;
-        }
-    }
+		public override string ToString ()
+		{
+			return Width + ", " + Height;
+		}
+	}
 
-    [Serializable]
-    public class Options
-    {
-        public const string TermChar = "\n";
-        public const string OptionsFilename = "options.bin";
+	[Serializable]
+	public class Options
+	{
+		public const string TermChar = "\n";
+		public const string OptionsFilename = "options.bin";
 
-        public readonly Resolution[] Resolutions =
-        {
+		public readonly Resolution[] Resolutions = {
             new Resolution(1920, 1200),
             new Resolution(1920, 1080),
             new Resolution(1680, 1050),
@@ -53,18 +52,7 @@ namespace XnaDarts
         public bool PlayAwards = true;
         public int PlayerChangeTimeout = 8;
 
-        [NonSerialized] public Color[] PlayerColors =
-        {
-            Color.Red,
-            Color.Blue,
-            Color.Yellow,
-            Color.Lime,
-            Color.Teal,
-            Color.Gold,
-            Color.Orange,
-            Color.Firebrick,
-            Color.Lime
-        };
+		[NonSerialized] public Color[] PlayerColors;
 
         public int ResolutionIndex = 0;
 
@@ -86,6 +74,22 @@ namespace XnaDarts
         // Theme Settings
         public string Theme = "Dark";
         public float Volume = 0.05f;
+
+		private Options() 
+		{
+			this.PlayerColors = new Color[]
+			{
+				Color.Red,
+				Color.Blue,
+				Color.Yellow,
+				Color.Lime,
+				Color.Teal,
+				Color.Gold,
+				Color.Orange,
+				Color.Firebrick,
+				Color.Lime
+			};
+		}
 
         public static Options Load()
         {
