@@ -175,7 +175,7 @@ namespace XnaDarts.Gameplay.Modes
         public Color GetPlayerColor(Player player)
         {
             var index = Players.FindIndex(p => p == player);
-            return XnaDartsGame.Options.PlayerColors[index%XnaDartsGame.Options.PlayerColors.Length];
+            return XnaDartsColors.PlayerColors[index%XnaDartsColors.PlayerColors.Length];
         }
 
         #endregion

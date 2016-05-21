@@ -57,7 +57,6 @@
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
     <Compile Include="FpsCounter.cs" />
-    <Compile Include="Game1.cs" />
     <Compile Include="Gameplay\Dart.cs" />
     <Compile Include="Gameplay\Modes\Bastard\Bastard.cs" />
     <Compile Include="Gameplay\Modes\CountUp\CountUp.cs" />
@@ -121,6 +120,7 @@
     <Compile Include="SerialPortStatusComponent.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="XnaDarts.cs" />
+    <Compile Include="XnaDartsColors.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

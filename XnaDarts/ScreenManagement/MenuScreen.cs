@@ -45,7 +45,7 @@ namespace XnaDarts.ScreenManagement
             if (MenuItems.Items.Count > 0)
             {
                 _selectedEntry = 0;
-                ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = XnaDartsGame.Options.SelectedMenuItemForeground;
+                ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = XnaDartsColors.SelectedMenuItemForeground;
             }
         }
 
@@ -58,8 +58,8 @@ namespace XnaDarts.ScreenManagement
 
             if (oldSelectedEntry != _selectedEntry)
             {
-                ((MenuEntry) MenuItems.Items[oldSelectedEntry]).Color = XnaDartsGame.Options.MenuItemForeground;
-                ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = XnaDartsGame.Options.SelectedMenuItemForeground;
+                ((MenuEntry) MenuItems.Items[oldSelectedEntry]).Color = XnaDartsColors.MenuItemForeground;
+                ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = XnaDartsColors.SelectedMenuItemForeground;
                 XnaDartsGame.SoundManager.PlaySound(SoundCue.MenuSelect);
             }
         }
@@ -192,7 +192,7 @@ namespace XnaDarts.ScreenManagement
 
             var sin = ((float) Math.Sin(ElapsedTime*5f) + 1.0f)/2.0f;
             var alpha = sin*0.8f + 0.2f;
-            var c = Color.Lerp(Color.White, XnaDartsGame.Options.SelectedMenuItemForeground, alpha);
+            var c = Color.Lerp(Color.White, XnaDartsColors.SelectedMenuItemForeground, alpha);
             ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = c;
 
             spriteBatch.Begin();
