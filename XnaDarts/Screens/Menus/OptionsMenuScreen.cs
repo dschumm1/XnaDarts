@@ -73,12 +73,14 @@ namespace XnaDarts.Screens.Menus
 
             MenuItems.AddItems(
                 _resolution,
-                _awards,
+                _fullScreen,
                 _volume,
+
+                _awards,
                 _playerChangeTimeout,
+
                 _comPort,
                 _baudRate,
-                _fullScreen,
                 _editSegmentMap,
                 _back
                 );

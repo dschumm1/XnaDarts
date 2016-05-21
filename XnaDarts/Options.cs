@@ -1,57 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace XnaDarts
 {
-    [Serializable]
-    public class Resolution
-    {
-        public int Height;
-        public int Width;
-
-        public Resolution(int width, int height)
-        {
-            Width = width;
-            Height = height;
-        }
-
-        public override string ToString()
-        {
-            return Width + ", " + Height;
-        }
-    }
-
     [Serializable]
     public class Options
     {
         public const string TermChar = "\n";
         public const string OptionsFilename = "options.bin";
 
-        public readonly Resolution[] Resolutions =
-        {
-            new Resolution(1920, 1200),
-            new Resolution(1920, 1080),
-            new Resolution(1680, 1050),
-            new Resolution(1200, 800),
-            new Resolution(1024, 768)
-        };
-
         public int BaudRate = 9600;
         // Serial Port Settings
         public int ComPort = 3;
         public bool Debug = false;
 
-        public bool FullScreen = false;
+        public bool FullScreen = true;
 
 
         public bool PlayAwards = true;
         public int PlayerChangeTimeout = 8;
 
 
-        public int ResolutionIndex = 0;
+        public int ResolutionIndex;
+
+        public Resolution[] Resolutions;
 
         /// <summary>
         ///     SegmentMap holds which dartboard coordinates that correspond to which segment.
@@ -72,6 +48,24 @@ namespace XnaDarts
 
         private Options()
         {
+            _getResolutions();
+        }
+
+        private void _getResolutions()
+        {
+            var numberOfSupportedDisplayModes = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes.Count();
+
+            Resolutions = new Resolution[numberOfSupportedDisplayModes];
+
+            for (var i = 0; i < numberOfSupportedDisplayModes; i++)
+            {
+                var mode = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes.ElementAt(i);
+
+                Resolutions[i] = new Resolution(mode.Width, mode.Height);
+            }
+
+            // default to max resolution
+            ResolutionIndex = numberOfSupportedDisplayModes - 1;
         }
 
         public static Options Load()
@@ -84,12 +78,12 @@ namespace XnaDarts
                     if (info.Length > 0)
                     {
                         System.Diagnostics.Debug.WriteLine("Options loaded: " + OptionsFilename);
-                        var bf = new BinaryFormatter();
-                        var fs = new FileStream(OptionsFilename, FileMode.Open);
-                        var temp = (Options) bf.Deserialize(fs);
-                        fs.Close();
+                        var binaryFormatter = new BinaryFormatter();
+                        var fileStream = new FileStream(OptionsFilename, FileMode.Open);
+                        var loadedOptions = (Options) binaryFormatter.Deserialize(fileStream);
+                        fileStream.Close();
 
-                        return temp;
+                        return loadedOptions;
                     }
                 }
             }

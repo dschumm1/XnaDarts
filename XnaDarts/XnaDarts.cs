@@ -24,10 +24,7 @@ namespace XnaDarts
 
             Options = Options.Load();
 
-            GraphicsDeviceManager.PreferredBackBufferWidth = Options.Resolutions[Options.ResolutionIndex].Width;
-            GraphicsDeviceManager.PreferredBackBufferHeight = Options.Resolutions[Options.ResolutionIndex].Height;
-
-            GraphicsDeviceManager.IsFullScreen = Options.FullScreen;
+            _updateResolution();
 
             SoundManager = new SoundManager(Content);
             ScreenManager = new ScreenManager(this);
@@ -47,6 +44,16 @@ namespace XnaDarts
             get { return ScreenManager.Game.GraphicsDevice.Viewport; }
         }
 
+        private void _updateResolution()
+        {
+            var resolution = Options.Resolutions[Options.ResolutionIndex];
+
+            GraphicsDeviceManager.PreferredBackBufferWidth = resolution.Width;
+            GraphicsDeviceManager.PreferredBackBufferHeight = resolution.Height;
+
+            GraphicsDeviceManager.IsFullScreen = Options.FullScreen;
+        }
+
         protected override void LoadContent()
         {
             base.LoadContent();
@@ -54,12 +61,10 @@ namespace XnaDarts
             ScreenManager.AddScreen(new BackgroundScreen());
             ScreenManager.AddScreen(new MainMenuScreen());
 
-            //SerialManager.Instance().OpenPort();
-
-            checkSegmentMap();
+            _checkSegmentMap();
         }
 
-        private static void checkSegmentMap()
+        private static void _checkSegmentMap()
         {
             var boundSegments = Options.SegmentMap.Where(x => x.Value != null);
             var count = boundSegments.Count();
@@ -70,13 +75,17 @@ namespace XnaDarts
                     MessageBoxButtons.Ok);
                 ScreenManager.AddScreen(mb);
             }
-            else if (count != 62)
+            else
             {
-                var mb = new MessageBoxScreen("Segment Map Warning",
-                    "It seems like not all segments are bound\n(The segment map contains " + count +
-                    " values,\nbut there are 62 segments on a dart board).\nEnter options to create the segment map.",
-                    MessageBoxButtons.Ok);
-                ScreenManager.AddScreen(mb);
+                var numberOfTotalSegments = 62;
+                if (count != numberOfTotalSegments)
+                {
+                    var mb = new MessageBoxScreen("Segment Map Warning",
+                        "It seems like not all segments are bound\n(The segment map contains " + count +
+                        " values,\nbut there are 62 segments on a dart board).\nEnter options to create the segment map.",
+                        MessageBoxButtons.Ok);
+                    ScreenManager.AddScreen(mb);
+                }
             }
 
             foreach (var p1 in boundSegments)
