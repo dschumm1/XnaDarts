@@ -1,9 +1,0 @@
-/home/marpe/dev/XnaDarts/XnaDarts/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/marpe/dev/XnaDarts/XnaDarts/bin/Windows/Debug/XnaDarts.dll.mdb
-/home/marpe/dev/XnaDarts/XnaDarts/bin/Windows/Debug/XnaDarts.dll
-/home/marpe/dev/XnaDarts/XnaDarts/obj/x86/Debug/XnaDarts.dll
-/home/marpe/dev/XnaDarts/XnaDarts/obj/x86/Debug/XnaDarts.dll.mdb
-/home/marpe/dev/XnaDarts/XnaDarts/bin/Windows/Debug/MonoGame.Framework.dll
-/home/marpe/dev/XnaDarts/XnaDarts/bin/Windows/Debug/OpenTK.dll
-/home/marpe/dev/XnaDarts/XnaDarts/bin/Windows/Debug/Tao.Sdl.dll
-/home/marpe/dev/XnaDarts/XnaDarts/bin/Windows/Debug/OpenTK.dll.config

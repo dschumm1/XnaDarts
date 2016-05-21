@@ -1,0 +1,67 @@
+[![Join the chat at https://gitter.im/marpe/XnaDarts](https://badges.gitter.im/marpe/XnaDarts.svg)](https://gitter.im/marpe/XnaDarts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+# XnaDarts
+##About
+
+This program communicates with the dart board through a virtual com-port. I'm using the FT232 usb to serial converter and an arduino connected to the dart board matrix.
+
+The software is written in XNA and is currently under development.
+
+For more details on the setup, check out my [blog](http://www.martinpersson.org/wordpress/2010/08/electronic-darts-board-to-pc/)
+
+##Building and Running
+In order to build the source code you need [XNA which Microsoft provides for free](http://www.microsoft.com/en-us/download/details.aspx?id=23714).
+
+If you just want to run a build of the program you need [XNA Redist](http://www.microsoft.com/en-us/download/details.aspx?id=20914).
+
+By default the COM port that I use is 3 and Baud Rate is set to 9600, but these settings can be changed in the options menu.
+
+Once the program recognizes the dart board you need to map each set of coordinates that are being transmitted to a segment in the options menu.
+
+If the dart board is being recognized (the icon in the top right will animate if it is) but you're not able to map any segments, make sure that the messages that are being transmitted are in the format "H: X, Y". I use "H:" for the board and "B:" for the buttons, X and Y are the input pins on the Arduino. If you're having problems, it might help to look at the code in SerialManager.cs and the code that is running on the [Arduino](http://pastebin.com/4sh8wWDE).
+
+Link to the [FTDI VCP (Virtual Com Port) Driver](http://www.ftdichip.com/Drivers/CDM/CDM%20v2.12.00%20WHQL%20Certified.exe).
+
+##Arduino Details
+The code running on the arduino is hosted on [pastebin](http://pastebin.com/4sh8wWDE)
+
+This is what my circuit layout looks like:
+http://dart.martinpersson.org/layout.jpg
+
+I've soldered the connectors to a experimentation board, then added connectors from that board which goes to my breadboard pcb with the arduino (see photos below).
+
+##Todo (in a somewhat prioritized order)
+  * Add Master In or Out Options. With Master In or Out enabled, players have to open or end on a triple, double or bulls-eye.
+  * Ability to set the number of rounds.
+  * Marks per round/average number of marks/ppd/ppr in cricket.
+  * Add Cricket Cut Throat.
+  * Ability to change the setting of allowing all players to end their round even if a player before them has won.
+  * Improve end of game screen (display all player statistics etc).
+  * Personal Statistics (online score tracking?).
+  * Graphical improvements.
+  * Ability to change the Bull split (50/50) or (25/50).
+  * Increase test coverage.
+
+Game modes to add:
+  * [Archery](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=927)
+  * [Jump Up](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=930)
+  * [3 In Line](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=931)
+  * [Gold Hunting](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=932)
+  * [Hyper Jump Up](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=933)
+  * [Kunitori](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=934)
+  * [Cr. Count Up](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=924)
+  * [Bullshoot](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=925)
+  * [Half-It](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=926)
+  * [Over](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=928)
+  * [Up Down Count Up](http://www.phoenixdart.com/ca/guide/view?guidecode_1=916&guidecode_2=929)
+
+##Screenshots
+ * [301](https://cloud.githubusercontent.com/assets/1239842/6649671/ed1a445e-c9f0-11e4-8ad1-ce8886ea8d70.png)
+ * [Cricket](https://cloud.githubusercontent.com/assets/1239842/6649669/ecf7564c-c9f0-11e4-8a11-a38fccc89f8f.png)
+ * [Editing Segment Map](https://cloud.githubusercontent.com/assets/1239842/6649670/ed10a282-c9f0-11e4-85fa-51c77f40fd22.png)
+
+##Photos
+* http://dart.martinpersson.org/IMGP5680.jpg
+* http://dart.martinpersson.org/IMGP5683.jpg
+* http://files.martinpersson.org/WP_000197.jpg
+* http://files.martinpersson.org/WP_000198.jpg
