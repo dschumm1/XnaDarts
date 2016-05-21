@@ -43,11 +43,11 @@ namespace XnaDarts
         {
             Color.Red,
             Color.Blue,
-            Color.Orange,
             Color.Yellow,
+            Color.Lime,
             Color.Teal,
             Color.Gold,
-            Color.Green,
+            Color.Orange,
             Color.Firebrick,
             Color.Lime
         };

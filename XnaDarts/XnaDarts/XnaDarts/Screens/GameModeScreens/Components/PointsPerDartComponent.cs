@@ -26,12 +26,12 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             var font = ScreenManager.Trebuchet24;
 
             float ppd;
-            var thrown = _mode.CurrentPlayer.Rounds.Sum(r => r.Darts.Count);
-            float totalScore = _mode.CurrentPlayer.Rounds.Sum(r => _mode.GetScore(r));
+            var thrownNumberOfDarts = _mode.CurrentPlayer.Rounds.Sum(r => r.Darts.Count);
+            float totalScore = _mode.GetScore(_mode.CurrentPlayer);
 
-            if (thrown > 0)
+            if (thrownNumberOfDarts > 0)
             {
-                ppd = totalScore/thrown;
+                ppd = totalScore/thrownNumberOfDarts;
             }
             else
             {

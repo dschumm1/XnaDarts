@@ -12,6 +12,7 @@ namespace XnaDarts.Screens.Menus
     {
         private readonly BaseModeScreen _gameModeScreen;
         private readonly MenuEntry _help = new MenuEntry("Help & About");
+        private readonly MenuEntry _modeOptions = new MenuEntry("Mode Options");
         private readonly MenuEntry _options = new MenuEntry("Options");
         private readonly MenuEntry _quit = new MenuEntry("Quit");
         private readonly MenuEntry _return = new MenuEntry("Return");
@@ -37,7 +38,21 @@ namespace XnaDarts.Screens.Menus
             _quit.OnSelected += Quit_OnSelected;
             _help.OnSelected += Help_OnSelected;
 
-            MenuItems.AddItems(_return, _unthrow, _summary, _options, _help, _quit);
+            _modeOptions.OnSelected += _modeOptions_OnSelected;
+
+            MenuItems.AddItems(_return);
+
+            if (_gameModeScreen.Mode.CurrentRoundIndex == 0)
+            {
+                MenuItems.AddItems(_modeOptions);
+            }
+
+            MenuItems.AddItems(_unthrow, _summary, _options, _help, _quit);
+        }
+
+        private void _modeOptions_OnSelected(object sender, EventArgs e)
+        {
+            XnaDartsGame.ScreenManager.AddScreen(new ModeOptionsMenuScreen(_gameModeScreen.Mode));
         }
 
         private void Summary_OnSelected(object sender, EventArgs e)

@@ -71,23 +71,24 @@ namespace XnaDarts.Screens.GameModeScreens.Components
                 if (i < _mode.CurrentPlayerRound.Darts.Count)
                 {
                     var dart = _mode.CurrentPlayerRound.Darts[i];
-                    drawDartScoreInText(spriteBatch, dart, dartPosition);
+                    _drawDartScoreInText(spriteBatch, dart, dartPosition);
                 }
                 else
                 {
-                    drawSolidDart(spriteBatch, dartPosition);
+                    _drawSolidDart(spriteBatch, dartPosition);
 
-                    if (i == _mode.CurrentPlayerRound.Darts.Count)
+                    var isCurrentDartToThrow = i == _mode.CurrentPlayerRound.Darts.Count;
+                    if (isCurrentDartToThrow)
                     {
-                        drawBlinkingDart(spriteBatch, dartPosition);
+                        _drawBlinkingDart(spriteBatch, dartPosition);
                     }
 
-                    drawNumber(spriteBatch, i, dartPosition);
+                    _drawNumber(spriteBatch, i, dartPosition);
                 }
             }
         }
 
-        private static void drawDartScoreInText(SpriteBatch spriteBatch, Dart dart, Vector2 dartPosition)
+        private void _drawDartScoreInText(SpriteBatch spriteBatch, Dart dart, Vector2 dartPosition)
         {
             string text;
             Color color;
@@ -98,18 +99,18 @@ namespace XnaDarts.Screens.GameModeScreens.Components
                 dartPosition - textOffset);
         }
 
-        private void drawNumber(SpriteBatch spriteBatch, int i, Vector2 position)
+        private void _drawNumber(SpriteBatch spriteBatch, int i, Vector2 position)
         {
             var numberOffset = _numberTextureSize*0.5f;
             spriteBatch.Draw(_numberTextures[i], position - numberOffset, Color.White);
         }
 
-        private void drawSolidDart(SpriteBatch spriteBatch, Vector2 position)
+        private void _drawSolidDart(SpriteBatch spriteBatch, Vector2 position)
         {
             spriteBatch.Draw(DartTexture, position - _dartTextureSize*0.5f, Color.White);
         }
 
-        private void drawBlinkingDart(SpriteBatch spriteBatch, Vector2 position)
+        private void _drawBlinkingDart(SpriteBatch spriteBatch, Vector2 position)
         {
             var alpha = ((float) (Math.Sin(XnaDartsGame.ElapsedTime*MathHelper.Pi/DartBlinkRate)) + 1)*0.5f;
             spriteBatch.Draw(_solidDart, position - _dartTextureSize*0.5f, Color.White*alpha);

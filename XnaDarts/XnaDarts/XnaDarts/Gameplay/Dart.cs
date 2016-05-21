@@ -15,10 +15,8 @@ namespace XnaDarts.Gameplay
         {
             if (Segment == 25)
             {
-                // TODO: Allow changing the bull scoring
-                return Segment*2; // Regardless of multiplier (single/double bull)
+                return Segment*2;
             }
-
             return Segment*Multiplier;
         }
 

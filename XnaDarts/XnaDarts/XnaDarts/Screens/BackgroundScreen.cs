@@ -29,7 +29,7 @@ namespace XnaDarts.Screens
             spriteBatch.Begin();
             spriteBatch.Draw(_background, new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height),
                 Color.White);
-            const string text = "Martin Persson 2015-01-29, www.martinpersson.org";
+            const string text = "Martin Persson 2016-01-25, www.martinpersson.org";
 
             var temp = ScreenManager.Arial12.MeasureString(text)*0.5f;
             var offset = new Vector2((int) temp.X, (int) temp.Y);

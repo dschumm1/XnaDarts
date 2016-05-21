@@ -1,4 +1,4 @@
-﻿using XnaDarts.Gameplay.Modes;
+﻿using XnaDarts.Gameplay.Modes.CountUp;
 using XnaDarts.Screens.GameModeScreens.Components;
 using XnaDarts.Screens.GameScreens;
 
@@ -20,7 +20,7 @@ namespace XnaDarts.Screens.GameModeScreens
         {
             base.HandleEndOfTurn();
 
-            if (Mode.IsLastThrow())
+            if (Mode.IsLastThrow)
             {
                 _awardScreen.PlayAwards(Mode.CurrentPlayerRound);
             }

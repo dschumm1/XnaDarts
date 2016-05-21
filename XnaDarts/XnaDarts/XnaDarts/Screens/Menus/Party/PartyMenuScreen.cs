@@ -1,5 +1,6 @@
 ﻿using System;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.Bastard;
 using XnaDarts.ScreenManagement;
 using XnaDarts.Screens.GameModeScreens;
 
