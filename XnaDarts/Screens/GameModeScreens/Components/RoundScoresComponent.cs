@@ -17,7 +17,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         public RoundScoresComponent(GameMode mode)
         {
             _mode = mode;
-            _position = new Vector2(20, XnaDartsGame.Viewport.Height*0.33f);
+            _position = new Vector2(20, XnaDartsGame.Viewport.Height*0.4f);
         }
 
         /// <summary>
