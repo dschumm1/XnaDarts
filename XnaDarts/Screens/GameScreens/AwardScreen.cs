@@ -23,14 +23,14 @@ namespace XnaDarts.Screens.GameScreens
 
     public class AwardScreen : GameScreen
     {
-        private bool _loaded;
-        //private readonly Dictionary<AwardCue, Video> _awards = new Dictionary<AwardCue, Video>();
-        //private readonly VideoPlayer _videoPlayer;
+        private readonly Dictionary<AwardCue, Video> _awards = new Dictionary<AwardCue, Video>();
+        private readonly VideoPlayer _videoPlayer;
         private ContentManager _content;
+        private bool _loaded;
 
         public AwardScreen()
         {
-            //_videoPlayer = new VideoPlayer();
+            _videoPlayer = new VideoPlayer();
         }
 
 
@@ -43,27 +43,27 @@ namespace XnaDarts.Screens.GameScreens
 
             if (!_loaded)
             {
-                //_awards.Add(AwardCue.HatTrick, _content.Load<Video>(@"Awards\HatTrick"));
-                //_awards.Add(AwardCue.HighTon, _content.Load<Video>(@"Awards\HighTon"));
-                //_awards.Add(AwardCue.LowTon, _content.Load<Video>(@"Awards\LowTon"));
-                //_awards.Add(AwardCue.ThreeInABed, _content.Load<Video>(@"Awards\ThreeInABed"));
-                //_awards.Add(AwardCue.ThreeInTheBlack, _content.Load<Video>(@"Awards\ThreeInTheBlack"));
-                //_awards.Add(AwardCue.TonEighty, _content.Load<Video>(@"Awards\TonEighty"));
-                //_awards.Add(AwardCue.WhiteHorse, _content.Load<Video>(@"Awards\WhiteHorse"));
+                _awards.Add(AwardCue.HatTrick, _content.Load<Video>(@"Awards\HatTrick"));
+                _awards.Add(AwardCue.HighTon, _content.Load<Video>(@"Awards\HighTon"));
+                _awards.Add(AwardCue.LowTon, _content.Load<Video>(@"Awards\LowTon"));
+                _awards.Add(AwardCue.ThreeInABed, _content.Load<Video>(@"Awards\ThreeInABed"));
+                _awards.Add(AwardCue.ThreeInTheBlack, _content.Load<Video>(@"Awards\ThreeInTheBlack"));
+                _awards.Add(AwardCue.TonEighty, _content.Load<Video>(@"Awards\TonEighty"));
+                _awards.Add(AwardCue.WhiteHorse, _content.Load<Video>(@"Awards\WhiteHorse"));
                 _loaded = true;
             }
         }
 
         private void _play(AwardCue cue)
         {
-            /*if (!_awards.Keys.Contains(cue))
+            if (!_awards.Keys.Contains(cue))
             {
                 throw new Exception("Award Error");
             }
 
             _videoPlayer.Volume = XnaDartsGame.Options.Volume;
 
-            _videoPlayer.Play(_awards[cue]);*/
+            _videoPlayer.Play(_awards[cue]);
             XnaDartsGame.ScreenManager.AddScreen(this);
         }
 
@@ -71,7 +71,7 @@ namespace XnaDarts.Screens.GameScreens
         {
             try
             {
-                //_videoPlayer.Stop();
+                _videoPlayer.Stop();
             }
             catch (Exception)
             {
@@ -170,10 +170,10 @@ namespace XnaDarts.Screens.GameScreens
         {
             base.Update(gameTime, isCoveredByOtherScreen);
 
-            /*if (_videoPlayer.PlayPosition.Equals(_videoPlayer.Video.Duration))
+            if (_videoPlayer.PlayPosition.Equals(_videoPlayer.Video.Duration))
             {
                 Stop();
-            }*/
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -181,11 +181,11 @@ namespace XnaDarts.Screens.GameScreens
             base.Draw(spriteBatch);
 
             spriteBatch.Begin();
-            /*if (_videoPlayer.State == MediaState.Playing)
+            if (_videoPlayer.State == MediaState.Playing)
             {
                 spriteBatch.Draw(_videoPlayer.GetTexture(),
                     new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height), Color.White);
-            }*/
+            }
             spriteBatch.End();
         }
     }
