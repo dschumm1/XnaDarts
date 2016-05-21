@@ -1,7 +1,8 @@
+[![Join the chat at https://gitter.im/marpe/XnaDarts](https://badges.gitter.im/marpe/XnaDarts.svg)](https://gitter.im/marpe/XnaDarts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # XnaDarts
 ##About
 
-[![Join the chat at https://gitter.im/marpe/XnaDarts](https://badges.gitter.im/marpe/XnaDarts.svg)](https://gitter.im/marpe/XnaDarts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This program communicates with the dart board through a virtual com-port. I'm using the FT232 usb to serial converter and an arduino connected to the dart board matrix.
 
 The software is written in XNA and is currently under development.
