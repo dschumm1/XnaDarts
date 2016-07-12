@@ -6,12 +6,13 @@ using XnaDarts.Screens.Menus;
 
 namespace XnaDarts.Screens
 {
+    [Flags]
     public enum MessageBoxButtons
     {
-        YesNo,
-        YesNoCancel,
-        Ok,
-        Cancel
+        Yes = 1,
+        No = 2,
+        Ok = 4,
+        Cancel = 8
     }
 
     public class MessageBoxScreen : MenuScreen
@@ -38,20 +39,24 @@ namespace XnaDarts.Screens
             _meOk.Font = ScreenManager.Trebuchet24;
             _meCancel.Font = ScreenManager.Trebuchet24;
 
-            switch (buttons)
+            if (buttons.HasFlag(MessageBoxButtons.Yes))
             {
-                case MessageBoxButtons.YesNo:
-                    MenuItems.AddItems(_meYes, _meNo);
-                    break;
-                case MessageBoxButtons.YesNoCancel:
-                    MenuItems.AddItems(_meYes, _meNo, _meCancel);
-                    break;
-                case MessageBoxButtons.Ok:
-                    MenuItems.AddItems(_meOk);
-                    break;
-                case MessageBoxButtons.Cancel:
-                    MenuItems.AddItems(_meCancel);
-                    break;
+                MenuItems.AddItems(_meYes);
+            }
+            
+            if (buttons.HasFlag(MessageBoxButtons.No))
+            {
+                MenuItems.AddItems(_meNo);
+            }
+
+            if (buttons.HasFlag(MessageBoxButtons.Ok))
+            {
+                MenuItems.AddItems(_meOk);
+            }
+
+            if (buttons.HasFlag(MessageBoxButtons.Cancel))
+            {
+                MenuItems.AddItems(_meCancel);
             }
 
             MenuPosition = Vector2.One*0.5f -

@@ -177,7 +177,8 @@ namespace XnaDarts.Screens.GameModeScreens
                 Content = new ContentManager(XnaDartsGame.ScreenManager.Game.Services, @"Content");
             }
 
-            _background = Content.Load<Texture2D>(@"Images\Backgrounds\AbstractBackground"); // XnaDartsGame.Options.Theme
+            _background = Content.Load<Texture2D>(@"Images\Backgrounds\AbstractBackground");
+                // XnaDartsGame.Options.Theme
 
             SerialManager.Instance().OnDartRegistered = _registerDart;
             SerialManager.Instance().OnDartHit = null;
@@ -318,8 +319,10 @@ namespace XnaDarts.Screens.GameModeScreens
 
             leaders.ForEach(p => text += " " + p.Name);
 
-            var gameOverScreen = new MessageBoxScreen("Game Over", text, MessageBoxButtons.Ok);
-            gameOverScreen.OnOk += delegate { _pause(); };
+            var gameOverScreen = new TimeoutMessageBoxScreen("Game Over", text,
+                MessageBoxButtons.Ok | MessageBoxButtons.Cancel, 8f);
+            gameOverScreen.OnOk += delegate { RemoveScreen(); };
+            gameOverScreen.OnCancel += delegate { _pause(); };
             XnaDartsGame.ScreenManager.AddScreen(gameOverScreen);
         }
 

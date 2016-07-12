@@ -67,7 +67,7 @@ namespace XnaDarts.Screens.Menus
 
         public override void CancelScreen()
         {
-            var confirm = new MessageBoxScreen("Quit", "Are you sure you want to quit?", MessageBoxButtons.YesNo);
+            var confirm = new MessageBoxScreen("Quit", "Are you sure you want to quit?", MessageBoxButtons.Yes | MessageBoxButtons.No);
             confirm.OnYes += confirmQuit;
             XnaDartsGame.ScreenManager.AddScreen(confirm);
         }

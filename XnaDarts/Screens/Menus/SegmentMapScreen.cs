@@ -10,6 +10,12 @@ namespace XnaDarts.Screens.Menus
 {
     public class SegmentMapScreen : MenuScreen
     {
+        private readonly MenuEntry _back = new MenuEntry("Back");
+        private readonly MenuEntry _bindAll = new MenuEntry("Bind All");
+        private readonly MenuEntry _clear = new MenuEntry("Clear All Bindings");
+        private readonly MenuEntry _edit = new MenuEntry("Edit Bindings");
+        private readonly int[] _segmentOrder = {20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5};
+        private readonly int[] _segmentRotation = {1, 8, 10, 3, 19, 5, 12, 14, 17, 6, 15, 18, 4, 16, 7, 13, 9, 2, 11, 0};
         private BindSegmentScreen _bindScreen;
         private Vector2 _boardPosition;
         private float _boardScale = 0.33f;
@@ -34,12 +40,6 @@ namespace XnaDarts.Screens.Menus
         private Texture2D _singleBullTexture;
         private Texture2D _tripleTexture;
         public ContentManager Content;
-        private readonly MenuEntry _back = new MenuEntry("Back");
-        private readonly MenuEntry _bindAll = new MenuEntry("Bind All");
-        private readonly MenuEntry _clear = new MenuEntry("Clear All Bindings");
-        private readonly MenuEntry _edit = new MenuEntry("Edit Bindings");
-        private readonly int[] _segmentOrder = {20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5};
-        private readonly int[] _segmentRotation = {1, 8, 10, 3, 19, 5, 12, 14, 17, 6, 15, 18, 4, 16, 7, 13, 9, 2, 11, 0};
 
         public SegmentMapScreen(string title) : base(title)
         {
@@ -74,7 +74,7 @@ namespace XnaDarts.Screens.Menus
         private void clear_OnSelected(object sender, EventArgs e)
         {
             var mb = new MessageBoxScreen("Confirm", "Are you sure you want to clear all bindings?",
-                MessageBoxButtons.YesNo);
+                MessageBoxButtons.Yes | MessageBoxButtons.No);
             mb.OnYes += mbClear_OnYes;
             XnaDartsGame.ScreenManager.AddScreen(mb);
         }
@@ -116,7 +116,7 @@ namespace XnaDarts.Screens.Menus
             if (_hasMadeChanges)
             {
                 var mb = new MessageBoxScreen("Confirm", "Do you want to save the changes?",
-                    MessageBoxButtons.YesNoCancel);
+                    MessageBoxButtons.Yes | MessageBoxButtons.No | MessageBoxButtons.Cancel);
                 mb.OnYes += mb_OnYes;
                 mb.OnNo += mb_OnNo;
                 XnaDartsGame.ScreenManager.AddScreen(mb);

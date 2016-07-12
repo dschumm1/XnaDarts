@@ -73,7 +73,7 @@ namespace XnaDarts.Screens.Menus
         private void Unthrow_OnSelected(object sender, EventArgs e)
         {
             var confirm = new MessageBoxScreen("Confirm", "Are you sure you want to remove\nthe last thrown dart?",
-                MessageBoxButtons.YesNo);
+                MessageBoxButtons.Yes | MessageBoxButtons.No);
             confirm.OnYes += ConfirmUnthrow_OnAccept;
             XnaDartsGame.ScreenManager.AddScreen(confirm);
         }
@@ -86,7 +86,7 @@ namespace XnaDarts.Screens.Menus
 
         private void Quit_OnSelected(object sender, EventArgs e)
         {
-            var mbox = new MessageBoxScreen("Quit", "Are you sure you want to quit?", MessageBoxButtons.YesNo);
+            var mbox = new MessageBoxScreen("Quit", "Are you sure you want to quit?", MessageBoxButtons.Yes | MessageBoxButtons.No);
             mbox.OnYes += mbox_OnAccept;
             XnaDartsGame.ScreenManager.AddScreen(mbox);
         }

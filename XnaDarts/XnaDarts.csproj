@@ -116,6 +116,7 @@
     <Compile Include="Screens\Menus\Standard\StandardMenuScreen.cs" />
     <Compile Include="Screens\Menus\Standard\ZeroOneMenuScreen.cs" />
     <Compile Include="Screens\Menus\TextBlock.cs" />
+    <Compile Include="Screens\TimeoutMessageBoxScreen.cs" />
     <Compile Include="Screens\MessageBoxScreen.cs" />
     <Compile Include="SerialManager.cs" />
     <Compile Include="SerialPortStatusComponent.cs" />
