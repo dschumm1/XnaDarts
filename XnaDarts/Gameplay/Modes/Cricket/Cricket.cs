@@ -132,14 +132,19 @@ namespace XnaDarts.Gameplay.Modes.Cricket
 
         public bool IsSegmentOpen(int segment)
         {
+            // hits in a segment which is part of the cricket 15-20 and bull
             var segmentHits = CricketHits.Where(cricketHit => cricketHit.Dart.Segment == segment);
 
+            // group each hit by player
             var playerHits = segmentHits.GroupBy(hit => hit.Dart.Player);
 
+            // sum all of the marks hit for each segment and check if its above or equal to the price of that segment
             var playerHitSum = playerHits.Where(hits => hits.Sum(hit => hit.Marks) >= SegmentPrice);
 
+            // get the number of players who have reached the price
             var playerHitSumCount = playerHitSum.Count();
 
+            // the segment is open as long as not all players have hit the price
             return playerHitSumCount != Players.Count;
         }
 
