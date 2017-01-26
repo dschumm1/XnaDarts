@@ -19,7 +19,6 @@ namespace XnaDarts.Screens.GameScreens
             _back.OnSelected += back_OnSelected;
 
             MenuItems.AddItems(_back);
-            MenuPosition.Y = 0.8f;
         }
 
         private void back_OnSelected(object sender, EventArgs e)
@@ -31,13 +30,13 @@ namespace XnaDarts.Screens.GameScreens
         {
             base.Draw(spriteBatch);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
 
             const float spacing = 12.0f;
             var players = _gameplayScreen.Mode.Players;
-            var width = XnaDartsGame.Viewport.Width/(float) players.Count*0.8f;
-            var position = new Vector2(XnaDartsGame.Viewport.Width*0.5f - width*players.Count*0.5f,
-                XnaDartsGame.Viewport.Height*0.2f);
+            var width = ResolutionHandler.VWidth/ (float)players.Count * 0.8f;
+            var position = new Vector2(ResolutionHandler.VWidth* 0.5f - width * players.Count * 0.5f,
+                ResolutionHandler.VHeight* 0.2f);
             var font = ScreenManager.Trebuchet24;
 
             for (var i = 0; i < players.Count; i++)
@@ -80,7 +79,7 @@ namespace XnaDarts.Screens.GameScreens
                 }
 
                 position.X += width + spacing;
-                position.Y = XnaDartsGame.Viewport.Height*0.2f;
+                position.Y = ResolutionHandler.VHeight* 0.2f;
             }
 
             spriteBatch.End();

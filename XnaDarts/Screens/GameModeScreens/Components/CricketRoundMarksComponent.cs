@@ -23,7 +23,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         public CricketRoundMarksComponent(Cricket mode)
         {
             _mode = mode;
-            _position = new Vector2(20, XnaDartsGame.Viewport.Height*0.4f);
+            _position = new Vector2(20, ResolutionHandler.VHeight*0.4f);
         }
 
         public void Draw(SpriteBatch spriteBatch)

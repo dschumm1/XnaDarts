@@ -39,19 +39,13 @@ namespace XnaDarts
             IsMouseVisible = true;
         }
 
-        public static Viewport Viewport
-        {
-            get { return ScreenManager.Game.GraphicsDevice.Viewport; }
-        }
-
         private void _updateResolution()
         {
+            ResolutionHandler.Init(ref GraphicsDeviceManager);
+            ResolutionHandler.SetVirtualResolution(1280, 720);
             var resolution = Options.Resolutions[Options.ResolutionIndex];
 
-            GraphicsDeviceManager.PreferredBackBufferWidth = resolution.Width;
-            GraphicsDeviceManager.PreferredBackBufferHeight = resolution.Height;
-
-            GraphicsDeviceManager.IsFullScreen = Options.FullScreen;
+            ResolutionHandler.SetResolution(resolution.Width, resolution.Height, Options.FullScreen);
         }
 
         protected override void LoadContent()
@@ -66,8 +60,8 @@ namespace XnaDarts
 
         private static void _checkSegmentMap()
         {
-            var boundSegments = Options.SegmentMap.Where(x => x.Value != null);
-            var count = boundSegments.Count();
+            var boundSegments = Options.SegmentMap.Where(x => x.Value != null).ToList();
+            var count = boundSegments.Count;
             if (count == 0)
             {
                 var mb = new MessageBoxScreen("Segment Map Warning",
@@ -118,12 +112,6 @@ namespace XnaDarts
         protected override void UnloadContent()
         {
             SerialManager.Instance().ClosePort();
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            base.Draw(gameTime);
         }
     }
 }

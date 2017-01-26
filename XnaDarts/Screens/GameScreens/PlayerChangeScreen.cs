@@ -39,11 +39,12 @@ namespace XnaDarts.Screens.GameScreens
         {
             base.Draw(spriteBatch);
 
-            spriteBatch.Begin();
-            var elapsedWidth = (int) (XnaDartsGame.Viewport.Width*(1f - ElapsedTime/Timeout.TotalMilliseconds));
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                ResolutionHandler.GetTransformationMatrix());
+            var elapsedWidth = (int) (ResolutionHandler.VWidth*(1f - ElapsedTime/Timeout.TotalMilliseconds));
             spriteBatch.Draw(ScreenManager.BlankTexture, new Rectangle(0, 0, elapsedWidth, 20), Color.White*0.33f);
             _playerChangeButton.Draw(spriteBatch,
-                new Vector2(XnaDartsGame.Viewport.Width*0.8f, XnaDartsGame.Viewport.Height*0.5f));
+                new Vector2(ResolutionHandler.VWidth*0.8f, ResolutionHandler.VHeight*0.5f));
             spriteBatch.End();
         }
     }

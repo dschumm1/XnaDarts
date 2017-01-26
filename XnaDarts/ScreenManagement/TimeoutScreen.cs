@@ -9,7 +9,6 @@ namespace XnaDarts.ScreenManagement
     {
         private Texture2D _backgroundTexture;
         //private Curve _myCurve;
-        private Vector2 _position = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height)*0.5f;
         private SpriteFont _spriteFont = ScreenManager.Trebuchet64;
         public ContentManager Content;
 
@@ -24,7 +23,7 @@ namespace XnaDarts.ScreenManagement
                 Timeout = TimeSpan.MaxValue;
             }
 
-            Position = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height)*0.5f;
+            Position = new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight)*0.5f;
             Color = Color.White;
             BackgroundColor = Color.White*0.5f;
         }
@@ -39,11 +38,7 @@ namespace XnaDarts.ScreenManagement
 
         public Color Color { get; set; }
 
-        public Vector2 Position
-        {
-            get { return _position; }
-            set { _position = value; }
-        }
+        public Vector2 Position { get; set; }
 
         public TimeSpan Timeout { get; set; }
         public Color BackgroundColor { get; set; }
@@ -97,10 +92,11 @@ namespace XnaDarts.ScreenManagement
         {
             base.Draw(spriteBatch);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                ResolutionHandler.GetTransformationMatrix());
             spriteBatch.Draw(_backgroundTexture,
-                new Rectangle(0, (int) (XnaDartsGame.Viewport.Height*0.5f - _backgroundTexture.Height*0.5f),
-                    XnaDartsGame.Viewport.Width, _backgroundTexture.Height - 25), BackgroundColor);
+                new Rectangle(0, (int) (ResolutionHandler.VHeight*0.5f - _backgroundTexture.Height*0.5f),
+                    ResolutionHandler.VWidth, _backgroundTexture.Height - 25), BackgroundColor);
 
             var origin = _spriteFont.MeasureString(Text)*0.5f;
             var scale = 1.0f; //_myCurve.Evaluate(ElapsedTime*0.001f); //TODO: Fix

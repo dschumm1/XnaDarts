@@ -34,9 +34,9 @@ namespace XnaDarts.ScreenManagement
 
             ElapsedTime += dt;
 
-            updateTransitionAlpha(dt, isCoveredByOtherScreen);
+            _updateTransitionAlpha(dt, isCoveredByOtherScreen);
 
-            updateScreenState();
+            _updateScreenState();
         }
 
         public static float GetDeltaTimeInSeconds(GameTime gameTime)
@@ -58,7 +58,7 @@ namespace XnaDarts.ScreenManagement
         {
         }
 
-        private void updateScreenState()
+        private void _updateScreenState()
         {
             if (State == ScreenState.Exiting && TransitionAlpha <= 0)
             {
@@ -70,7 +70,7 @@ namespace XnaDarts.ScreenManagement
             }
         }
 
-        private void updateTransitionAlpha(float deltaTime, bool isCoveredByOtherScreen)
+        private void _updateTransitionAlpha(float deltaTime, bool isCoveredByOtherScreen)
         {
             var transitionDelta = deltaTime/TransitionDuration;
 

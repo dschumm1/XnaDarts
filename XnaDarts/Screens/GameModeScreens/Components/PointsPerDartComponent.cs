@@ -22,7 +22,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var position = new Vector2(XnaDartsGame.Viewport.Width*0.5f, XnaDartsGame.Viewport.Height*0.125f);
+            var position = new Vector2(ResolutionHandler.VWidth*0.5f, ResolutionHandler.VHeight*0.125f);
             var font = ScreenManager.Trebuchet24;
 
             float ppd;

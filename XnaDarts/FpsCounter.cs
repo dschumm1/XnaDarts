@@ -44,7 +44,7 @@ namespace XnaDarts
 
             if (_visible)
             {
-                _spriteBatch.Begin();
+                _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
                 _spriteBatch.DrawString(_font, "FPS : " + _fps, new Vector2(20, 20) + Vector2.One, Color.Black);
                 _spriteBatch.DrawString(_font, "FPS : " + _fps, new Vector2(20, 20), Color.White);
                 _spriteBatch.End();

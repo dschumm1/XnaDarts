@@ -41,7 +41,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             var bigFont = ScreenManager.Trebuchet32;
             var scoreFont = ScreenManager.Trebuchet48;
 
-            var playerPanelWidth = XnaDartsGame.Viewport.Width/_mode.Players.Count;
+            var playerPanelWidth = ResolutionHandler.VWidth/_mode.Players.Count;
 
             if (playerPanelWidth > PlayerPanelMaxWidth)
             {
@@ -49,8 +49,8 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             }
 
             var position =
-                new Vector2(XnaDartsGame.Viewport.Width*0.5f - _mode.Players.Count/2.0f*playerPanelWidth,
-                    XnaDartsGame.Viewport.Height*0.8f);
+                new Vector2(ResolutionHandler.VWidth*0.5f - _mode.Players.Count/2.0f*playerPanelWidth,
+                    ResolutionHandler.VHeight*0.8f);
             var leaders = _mode.GetLeaders();
             for (var i = 0; i < _mode.Players.Count; i++)
             {
@@ -70,7 +70,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
                 var scoreSize = scoreFont.MeasureString(score);
 
                 var y = (int) (position.Y + nameSize.Y);
-                var height = XnaDartsGame.Viewport.Height - y;
+                var height = ResolutionHandler.VHeight - y;
                 var scoreRectangle = new Rectangle((int) position.X, y, playerPanelWidth, height);
 
                 if (_mode.CurrentPlayerIndex == i)

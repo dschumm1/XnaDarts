@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace XnaDarts
@@ -27,9 +28,9 @@ namespace XnaDarts
             _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
         }
 
-        private void drawSerialPortStatus(SpriteBatch spriteBatch)
+        private void _drawSerialPortStatus(SpriteBatch spriteBatch)
         {
-            var position = new Vector2(XnaDartsGame.Viewport.Width - _serialDisconnected.Width - 20, 20);
+            var position = new Vector2(ResolutionHandler.VWidth - _serialDisconnected.Width - 20, 20);
 
             if (!SerialManager.Instance().IsPortOpen)
             {
@@ -43,8 +44,8 @@ namespace XnaDarts
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
-            drawSerialPortStatus(_spriteBatch);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
+            _drawSerialPortStatus(_spriteBatch);
             _spriteBatch.End();
         }
 

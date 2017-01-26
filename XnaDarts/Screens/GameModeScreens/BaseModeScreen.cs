@@ -83,9 +83,9 @@ namespace XnaDarts.Screens.GameModeScreens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
 
-            spriteBatch.Draw(_background, new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height),
+            spriteBatch.Draw(_background, new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight),
                 Mode.GetPlayerColor(Mode.CurrentPlayer));
 
             foreach (var drawableGameComponent in GuiComponents)

@@ -66,8 +66,8 @@ namespace XnaDarts.Screens.Menus
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var translation = Position*new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
-            var transform = Matrix.CreateScale(Scale)*Matrix.CreateTranslation(new Vector3(translation, 0));
+            var translation = Position*new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight);
+            var transform = Matrix.CreateScale(Scale)*Matrix.CreateTranslation(new Vector3(translation, 0)) * ResolutionHandler.GetTransformationMatrix();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transform);
 
@@ -110,7 +110,7 @@ namespace XnaDarts.Screens.Menus
 
         public IntPair GetSegment(Vector2 position)
         {
-            var dartboardPosition = Position*new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
+            var dartboardPosition = Position * new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight);
 
             var distanceToCenter = Vector2.Distance(position, dartboardPosition);
 

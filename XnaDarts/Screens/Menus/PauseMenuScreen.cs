@@ -99,10 +99,10 @@ namespace XnaDarts.Screens.Menus
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
             var bgAlpha = 0.8f;
             spriteBatch.Draw(ScreenManager.BlankTexture,
-                new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height), Color.Black*bgAlpha);
+                new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight), Color.Black*bgAlpha);
             spriteBatch.End();
 
             base.Draw(spriteBatch);

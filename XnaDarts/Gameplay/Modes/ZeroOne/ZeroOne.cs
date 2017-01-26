@@ -4,6 +4,9 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
 {
     public class ZeroOne : GameMode
     {
+        private readonly bool _isMasterOut = true;
+        private bool _isMasterIn = false;
+
         #region Constructor
 
         public ZeroOne(int players, int startScore)
@@ -34,17 +37,24 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             }
         }
 
+        public int BustLimit
+        {
+            get { return _isMasterOut ? 1 : 0; }
+        }
+
         public override int GetScore(Player player)
         {
-            var score = StartScore; // TODO: Maybe add handicap
+            var score = StartScore;
 
             for (var i = 0; i < CurrentRoundIndex; i++)
             {
                 var roundScore = player.Rounds[i].GetScore();
-                if (score - roundScore >= 0) // Don't count the round if the player went bust
+                var lastOrDefault = player.Rounds[i].Darts.LastOrDefault();
+                if (score - roundScore < BustLimit || (score - roundScore == 0 && (lastOrDefault != null && lastOrDefault.Multiplier == 1))) // Don't count if the player went bust
                 {
-                    score -= roundScore;
+                    continue;
                 }
+                score -= roundScore;
             }
 
             return score - player.Rounds[CurrentRoundIndex].GetScore();
@@ -52,12 +62,31 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
 
         public bool IsBust()
         {
-            return GetScore(CurrentPlayer) < 0;
+            return GetScore(CurrentPlayer) < BustLimit;
         }
 
         public bool HasWon()
         {
+            if (_isMasterOut)
+            {
+                return GetScore(CurrentPlayer) == 0 && _lastDartWasDouble();
+            }
             return GetScore(CurrentPlayer) == 0;
+        }
+
+        private bool _lastDartWasDouble()
+        {
+            var lastRound = CurrentPlayer.Rounds.LastOrDefault();
+            if (lastRound == null)
+            {
+                return false;
+            }
+            var lastDart = lastRound.Darts.LastOrDefault();
+            if (lastDart == null)
+            {
+                return false;
+            }
+            return (lastDart.Multiplier > 1 || lastDart.Segment == 25);
         }
 
         private bool _isLastPlayerAndEndOfTurnAndSomeoneHasWon()

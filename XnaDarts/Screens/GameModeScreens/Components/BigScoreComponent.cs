@@ -28,7 +28,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             const float scale = 1.0f;
             var score = _mode.GetScore(_mode.CurrentPlayer).ToString();
             var scoreTextOffset = new Vector2(score.Length*NumberWidth*scale, NumberHeight*scale)*0.5f;
-            var scorePosition = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height)*Position -
+            var scorePosition = new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight)*Position -
                                 scoreTextOffset;
 
             for (var i = 0; i < score.Length; i++)

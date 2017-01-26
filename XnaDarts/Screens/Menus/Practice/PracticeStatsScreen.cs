@@ -9,13 +9,13 @@ namespace XnaDarts.Screens.Menus.Practice
 {
     public class PracticeHistoryScreen : MenuScreen
     {
-        private LineBrush _lineBrush;
         private readonly MenuEntry _back = new MenuEntry("Back");
         private readonly RecordManager _recordManager;
+        private LineBrush _lineBrush;
 
         public PracticeHistoryScreen() : base("Practice History")
         {
-            MenuPosition = new Vector2(0.125f, 0.8f);
+            MenuPosition = new Vector2(100, 100);
 
             _back.OnSelected += (sender, args) => CancelScreen();
 
@@ -34,34 +34,35 @@ namespace XnaDarts.Screens.Menus.Practice
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                ResolutionHandler.GetTransformationMatrix());
             if (_recordManager.Records.Count == 0)
             {
                 var text = "There are no records saved";
                 var offset = ScreenManager.Trebuchet24.MeasureString(text);
                 TextBlock.DrawShadowed(spriteBatch, ScreenManager.Trebuchet24, text, Color.White,
-                    (new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height) - offset)*0.5f);
+                    (new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight) - offset)*0.5f);
             }
             else
             {
-                drawGraph(spriteBatch);
+                _drawGraph(spriteBatch);
             }
             spriteBatch.End();
 
             base.Draw(spriteBatch);
         }
 
-        private void drawGraph(SpriteBatch spriteBatch)
+        private void _drawGraph(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(ScreenManager.BlankTexture,
-                new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height), Color.Black);
+                new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight), Color.Black);
 
             var padding = 60;
 
-            var graphWidth = (int) (XnaDartsGame.Viewport.Width*0.8f) - padding*2;
-            var graphHeight = (int) (XnaDartsGame.Viewport.Height*0.6f) - padding*2;
-            var graphX = (int) (XnaDartsGame.Viewport.Width*0.1f) + padding;
-            var graphY = (int) (XnaDartsGame.Viewport.Width*0.1f) + padding;
+            var graphWidth = (int) (ResolutionHandler.VWidth*0.8f) - padding*2;
+            var graphHeight = (int)(ResolutionHandler.VHeight * 0.6f) - padding * 2;
+            var graphX = (int) (ResolutionHandler.VWidth*0.1f) + padding;
+            var graphY = (int) (ResolutionHandler.VWidth*0.1f) + padding;
 
             var spacing = graphWidth/Math.Max((_recordManager.Records.Count - 1), 1);
 

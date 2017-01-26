@@ -45,7 +45,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var viewport = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
+            var viewport = new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight);
             var centerOfDarts = viewport*Position;
 
             Vector2 orientation;

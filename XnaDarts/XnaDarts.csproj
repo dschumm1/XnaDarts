@@ -72,6 +72,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
+    <Compile Include="ResolutionHandler.cs" />
     <Compile Include="ScreenManagement\DialMenuEntry.cs" />
     <Compile Include="ScreenManagement\GameScreen.cs" />
     <Compile Include="ScreenManagement\InputState.cs" />

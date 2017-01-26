@@ -54,7 +54,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         {
             const int defaultNumberOfSegments = 7;
 
-            var viewport = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
+            var viewport = new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight);
             var componentCenter = viewport*new Vector2(0.5f, 0.4f);
 
             var markScaling = defaultNumberOfSegments/(float) _mode.Segments.Length*Scale;

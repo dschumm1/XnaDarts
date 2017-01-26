@@ -56,14 +56,14 @@ namespace XnaDarts.Screens.Menus
             }
             else
             {
-                buildSegmentMap();
+                _buildSegmentMap();
             }
         }
 
         private void bindAll_OnSelected(object sender, EventArgs e)
         {
             _selectedSegment = new IntPair(0, 1);
-            showBindSegmentScreen(getSelectedSegment(), true);
+            _showBindSegmentScreen(_getSelectedSegment(), true);
         }
 
         private void edit_OnSelected(object sender, EventArgs e)
@@ -81,7 +81,7 @@ namespace XnaDarts.Screens.Menus
 
         private void mbClear_OnYes(object sender, EventArgs e)
         {
-            buildSegmentMap();
+            _buildSegmentMap();
             _hasMadeChanges = true;
         }
 
@@ -96,10 +96,10 @@ namespace XnaDarts.Screens.Menus
 
             _mapTexture = Content.Load<Texture2D>(@"Images\SegmentMap");
 
-            _boardScale = 0.8f*XnaDartsGame.Viewport.Height/_mapTexture.Height;
+            _boardScale = 0.8f * ResolutionHandler.VHeight / _mapTexture.Height;
 
-            _boardPosition = new Vector2(XnaDartsGame.Viewport.Width - _boardScale*_mapTexture.Width*0.5f - 20.0f,
-                XnaDartsGame.Viewport.Height*0.5f);
+            _boardPosition = new Vector2(ResolutionHandler.VWidth - _boardScale * _mapTexture.Width * 0.5f - 20.0f,
+                ResolutionHandler.VHeight * 0.5f);
 
             _segmentTexture = Content.Load<Texture2D>(@"Images\Segment");
             _tripleTexture = Content.Load<Texture2D>(@"Images\Triple");
@@ -143,7 +143,7 @@ namespace XnaDarts.Screens.Menus
             back_OnSelected(null, null);
         }
 
-        private void buildSegmentMap()
+        private void _buildSegmentMap()
         {
             _segmentMap = new Dictionary<IntPair, IntPair>();
 
@@ -190,7 +190,7 @@ namespace XnaDarts.Screens.Menus
 
                 if (inputState.MenuEnter)
                 {
-                    showBindSegmentScreen(getSelectedSegment(), false);
+                    _showBindSegmentScreen(_getSelectedSegment(), false);
                 }
 
                 if (_selectedSegment.X > 19)
@@ -285,14 +285,14 @@ namespace XnaDarts.Screens.Menus
                     {
                         if (_mouseOver != null)
                         {
-                            showBindSegmentScreen(_mouseOver, false);
+                            _showBindSegmentScreen(_mouseOver, false);
                         }
                     }
                 }
             }
         }
 
-        private IntPair getSelectedSegment()
+        private IntPair _getSelectedSegment()
         {
             var segment = new IntPair(_segmentOrder[_selectedSegment.X], _selectedSegment.Y);
 
@@ -306,7 +306,7 @@ namespace XnaDarts.Screens.Menus
             return segment;
         }
 
-        private void showBindSegmentScreen(IntPair segment, bool bindingAll)
+        private void _showBindSegmentScreen(IntPair segment, bool bindingAll)
         {
             var prefix = "Single";
 
@@ -354,7 +354,7 @@ namespace XnaDarts.Screens.Menus
                 temp = false;
             }
 
-            showBindSegmentScreen(getSelectedSegment(), temp);
+            _showBindSegmentScreen(_getSelectedSegment(), temp);
         }
 
         private void bindScreen_OnClear(object sender, EventArgs e)
@@ -374,27 +374,27 @@ namespace XnaDarts.Screens.Menus
         {
             base.Draw(spriteBatch);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
 
-            drawDartboard(spriteBatch);
+            _drawDartboard(spriteBatch);
 
             drawBoardSegments(spriteBatch);
 
             highlightSegmentUnderCursor(spriteBatch);
 
-            highlightSelectedSegment(spriteBatch);
+            _highlightSelectedSegment(spriteBatch);
 
             spriteBatch.End();
         }
 
-        private void drawDartboard(SpriteBatch spriteBatch)
+        private void _drawDartboard(SpriteBatch spriteBatch)
         {
             var offset = new Vector2(_mapTexture.Width, _mapTexture.Height)*0.5f;
             var position = _boardPosition;
             spriteBatch.Draw(_mapTexture, position, null, Color.White, 0, offset, _boardScale, SpriteEffects.None, 0);
         }
 
-        private void highlightSelectedSegment(SpriteBatch spriteBatch)
+        private void _highlightSelectedSegment(SpriteBatch spriteBatch)
         {
             if (_isEditing)
             {

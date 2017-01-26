@@ -180,11 +180,11 @@ namespace XnaDarts.Screens.GameScreens
         {
             base.Draw(spriteBatch);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
             if (_videoPlayer.State == MediaState.Playing)
             {
                 spriteBatch.Draw(_videoPlayer.GetTexture(),
-                    new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height), Color.White);
+                    new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight), Color.White);
             }
             spriteBatch.End();
         }

@@ -26,15 +26,14 @@ namespace XnaDarts.Screens
         {
             base.Draw(spriteBatch);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(_background, new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height),
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
+            spriteBatch.Draw(_background, new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight),
                 Color.White);
             const string text = "Martin Persson 2016-01-25, www.martinpersson.org";
 
-            var temp = ScreenManager.Arial12.MeasureString(text)*0.5f;
-            var offset = new Vector2((int) temp.X, (int) temp.Y);
-            var position = new Vector2(XnaDartsGame.Viewport.Width*0.5f,
-                XnaDartsGame.Viewport.Height - ScreenManager.Arial12.MeasureString(text).Y);
+            var textSize = ScreenManager.Arial12.MeasureString(text)*0.5f;
+            var offset = new Vector2((int) textSize.X, (int) textSize.Y);
+            var position = new Vector2(ResolutionHandler.VWidth * 0.5f, ResolutionHandler.VHeight - ScreenManager.Arial12.MeasureString(text).Y);
             spriteBatch.DrawString(ScreenManager.Arial12, text, position - offset + Vector2.One, Color.Black);
             spriteBatch.DrawString(ScreenManager.Arial12, text, position - offset, Color.White);
             spriteBatch.End();

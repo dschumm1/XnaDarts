@@ -132,6 +132,8 @@ namespace XnaDarts.ScreenManagement
 
             screensToDraw.Reverse();
 
+            ResolutionHandler.BeginDraw();
+
             while (screensToDraw.Any())
             {
                 var screen = screensToDraw[screensToDraw.Count - 1];

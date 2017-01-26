@@ -59,7 +59,7 @@ namespace XnaDarts.Screens.Menus
             _comPort.OnSelected += ComPort_OnMenuRight;
             _comPort.OnCanceled += ComPort_OnMenuLeft;
 
-            createBaudRateMenuEntry();
+            _createBaudRateMenuEntry();
 
             _awards.OnSelected += Awards_OnSelected;
             _awards.OnMenuLeft += Awards_OnSelected;
@@ -101,7 +101,7 @@ namespace XnaDarts.Screens.Menus
             }
         }
 
-        private void createBaudRateMenuEntry()
+        private void _createBaudRateMenuEntry()
         {
             _baudRateIndex = Array.IndexOf(_baudRates, XnaDartsGame.Options.BaudRate);
 
@@ -122,10 +122,10 @@ namespace XnaDarts.Screens.Menus
         {
             _baudRateIndex++;
 
-            updateBaudRate();
+            _updateBaudRate();
         }
 
-        private void updateBaudRate()
+        private void _updateBaudRate()
         {
             if (_baudRateIndex < 0)
             {
@@ -144,7 +144,7 @@ namespace XnaDarts.Screens.Menus
         {
             _baudRateIndex--;
 
-            updateBaudRate();
+            _updateBaudRate();
         }
 
         private void Awards_OnSelected(object sender, EventArgs e)
@@ -153,14 +153,12 @@ namespace XnaDarts.Screens.Menus
             _awards.Value = XnaDartsGame.Options.PlayAwards ? "Yes" : "No";
         }
 
-        private void updateResolution()
+        private void _updateResolution()
         {
-            XnaDartsGame.GraphicsDeviceManager.PreferredBackBufferWidth =
-                XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].Width;
-            XnaDartsGame.GraphicsDeviceManager.PreferredBackBufferHeight =
-                XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].Height;
+            var width = XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].Width;
+            var height = XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].Height;
 
-            XnaDartsGame.GraphicsDeviceManager.ApplyChanges();
+            ResolutionHandler.SetResolution(width, height, XnaDartsGame.GraphicsDeviceManager.IsFullScreen);
 
             _resolution.Value = XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].ToString();
         }
@@ -173,7 +171,7 @@ namespace XnaDarts.Screens.Menus
                 XnaDartsGame.Options.ResolutionIndex = XnaDartsGame.Options.Resolutions.Length - 1;
             }
 
-            updateResolution();
+            _updateResolution();
         }
 
         private void Resolution_OnMenuRight(object sender, EventArgs e)
@@ -184,20 +182,20 @@ namespace XnaDarts.Screens.Menus
                 XnaDartsGame.Options.ResolutionIndex = 0;
             }
 
-            updateResolution();
+            _updateResolution();
         }
 
         private void ComPort_OnMenuRight(object sender, EventArgs e)
         {
-            updateComPort(+1);
+            _updateComPort(+1);
         }
 
         private void ComPort_OnMenuLeft(object sender, EventArgs e)
         {
-            updateComPort(-1);
+            _updateComPort(-1);
         }
 
-        private void updateComPort(int direction)
+        private void _updateComPort(int direction)
         {
             XnaDartsGame.Options.ComPort += direction;
 
@@ -216,7 +214,7 @@ namespace XnaDarts.Screens.Menus
             _comPort.Value = "COM" + XnaDartsGame.Options.ComPort;
         }
 
-        private void cancelScreen()
+        private void _cancelScreen()
         {
             showOptionsSaveResult();
 
@@ -230,7 +228,7 @@ namespace XnaDarts.Screens.Menus
 
         private void Back_OnSelected(object sender, EventArgs e)
         {
-            cancelScreen();
+            _cancelScreen();
         }
 
         private void showOptionsSaveResult()
@@ -250,7 +248,7 @@ namespace XnaDarts.Screens.Menus
 
         public override void CancelScreen()
         {
-            cancelScreen();
+            _cancelScreen();
         }
 
         private void EditSegmentMap_OnSelected(object sender, EventArgs e)
@@ -284,10 +282,10 @@ namespace XnaDarts.Screens.Menus
 
         private void FullScreen_ValueChanged(object sender, EventArgs e)
         {
-            XnaDartsGame.GraphicsDeviceManager.ToggleFullScreen();
-
-            XnaDartsGame.Options.FullScreen = XnaDartsGame.GraphicsDeviceManager.IsFullScreen;
-
+            XnaDartsGame.Options.FullScreen = !XnaDartsGame.Options.FullScreen;
+            var width = XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].Width;
+            var height = XnaDartsGame.Options.Resolutions[XnaDartsGame.Options.ResolutionIndex].Height;
+            ResolutionHandler.SetResolution(width, height, XnaDartsGame.Options.FullScreen);
             _fullScreen.Value = XnaDartsGame.Options.FullScreen ? "FullScreen" : "Windowed";
         }
 
@@ -301,11 +299,11 @@ namespace XnaDarts.Screens.Menus
                 XnaDartsGame.Options.Volume = 1.00f;
             }
 
-            updateVolumeValue();
+            _updateVolumeValue();
             XnaDartsGame.SoundManager.PlaySound(SoundCue.SingleBull);
         }
 
-        private void updateVolumeValue()
+        private void _updateVolumeValue()
         {
             _volume.Value = ((int) (Math.Round(XnaDartsGame.Options.Volume*100))) + "%";
         }
@@ -319,7 +317,7 @@ namespace XnaDarts.Screens.Menus
                 XnaDartsGame.Options.Volume = 0.00f;
             }
 
-            updateVolumeValue();
+            _updateVolumeValue();
             XnaDartsGame.SoundManager.PlaySound(SoundCue.SingleBull);
         }
     }

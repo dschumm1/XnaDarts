@@ -25,8 +25,7 @@ namespace XnaDarts.Screens
         public MessageBoxScreen(string title, string message, MessageBoxButtons buttons)
             : base(title)
         {
-            Message = new TextBlock(message);
-            Message.Font = ScreenManager.Trebuchet24;
+            Message = new TextBlock(message) {Font = ScreenManager.Trebuchet24};
             StackPanel.Items.Insert(1, Message);
 
             _meYes.OnSelected += meYes_OnSelected;
@@ -43,7 +42,7 @@ namespace XnaDarts.Screens
             {
                 MenuItems.AddItems(_meYes);
             }
-            
+
             if (buttons.HasFlag(MessageBoxButtons.No))
             {
                 MenuItems.AddItems(_meNo);
@@ -59,9 +58,9 @@ namespace XnaDarts.Screens
                 MenuItems.AddItems(_meCancel);
             }
 
-            MenuPosition = Vector2.One*0.5f -
-                           0.5f*new Vector2(StackPanel.Width, StackPanel.Height)/
-                           new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
+            MenuPosition = 0.5f*
+                           (new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight) -
+                            new Vector2(StackPanel.Width, StackPanel.Height));
         }
 
         public TextBlock Message { get; set; }
@@ -112,10 +111,11 @@ namespace XnaDarts.Screens
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                ResolutionHandler.GetTransformationMatrix());
             var bgAlpha = 0.66f*TransitionAlpha;
             spriteBatch.Draw(ScreenManager.BlankTexture,
-                new Rectangle(0, 0, XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height), Color.Black*bgAlpha);
+                new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight), Color.Black*bgAlpha);
             spriteBatch.End();
 
             base.Draw(spriteBatch);

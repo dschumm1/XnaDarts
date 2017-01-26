@@ -19,7 +19,7 @@ namespace XnaDarts.ScreenManagement
         //private Curve _myCurve;
         private int _selectedEntry;
         private float _transitionPosition = 2;
-        private float _transitionTimer = 0;
+        private float _transitionTimer;
         public StackPanel MenuItems = new StackPanel();
         public Vector2 MenuPosition;
         public int PaddingX = 24;
@@ -29,7 +29,7 @@ namespace XnaDarts.ScreenManagement
         internal MenuScreen(string title)
         {
             TransitionDuration = 0.5f;
-            MenuPosition = new Vector2(0.125f, 0.25f);
+            MenuPosition = new Vector2(100, 100);
             StackPanel.Items.Add(new TextBlock(title) {Color = Color.LightBlue, Font = ScreenManager.Trebuchet32});
             StackPanel.Items.Add(MenuItems);
         }
@@ -53,8 +53,8 @@ namespace XnaDarts.ScreenManagement
         {
             var oldSelectedEntry = _selectedEntry;
 
-            handleKeyboardInput(inputState);
-            handleMouseInput(inputState);
+            _handleKeyboardInput(inputState);
+            _handleMouseInput(inputState);
 
             if (oldSelectedEntry != _selectedEntry)
             {
@@ -68,20 +68,27 @@ namespace XnaDarts.ScreenManagement
         ///     Temporary(or not? :D) solution for handling mouse input
         /// </summary>
         /// <param name="inputState"></param>
-        private void handleMouseInput(InputState inputState)
+        private void _handleMouseInput(InputState inputState)
         {
             var height = 0;
-
+            var xScale = ResolutionHandler.VWidth/
+                         (float) XnaDartsGame.GraphicsDeviceManager.GraphicsDevice.Viewport.Width;
+            var yScale = ResolutionHandler.VHeight/
+                         (float) XnaDartsGame.GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
             for (var i = 0; i < StackPanel.Items.Count; i++)
             {
                 if (StackPanel.Items[i] == MenuItems)
                 {
                     for (var j = 0; j < MenuItems.Items.Count; j++)
                     {
-                        var menuItemBoundingBox = new Rectangle((int) (MenuPosition.X*XnaDartsGame.Viewport.Width),
-                            (int) (MenuPosition.Y*XnaDartsGame.Viewport.Height + height), MenuItems.Items[j].Width,
-                            MenuItems.Items[j].Height);
-                        if (menuItemBoundingBox.Contains(inputState.CurrentMouseState.X, inputState.CurrentMouseState.Y))
+                        var menuItemBoundingBox =
+                            new Rectangle(
+                                (int) (MenuPosition.X),
+                                (int) (MenuPosition.Y + height),
+                                MenuItems.Items[j].Width,
+                                MenuItems.Items[j].Height);
+                        if (menuItemBoundingBox.Contains(inputState.CurrentMouseState.X*xScale,
+                            inputState.CurrentMouseState.Y*yScale))
                         {
                             _selectedEntry = j;
 
@@ -104,7 +111,7 @@ namespace XnaDarts.ScreenManagement
             }
         }
 
-        private void handleKeyboardInput(InputState inputState)
+        private void _handleKeyboardInput(InputState inputState)
         {
             var selectedMenuEntry = MenuItems.Items[_selectedEntry];
             selectedMenuEntry.HandleInput(inputState);
@@ -159,10 +166,6 @@ namespace XnaDarts.ScreenManagement
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-
-            var viewport = new Vector2(XnaDartsGame.Viewport.Width, XnaDartsGame.Viewport.Height);
-
             var transitionTo = 0;
 
             if (IsCoveredByOtherScreen)
@@ -178,7 +181,8 @@ namespace XnaDarts.ScreenManagement
                 transitionTo = 2;
             }
 
-            _transitionPosition += (transitionTo - _transitionPosition)*MathHelper.Lerp(0, 1, MathHelper.Clamp(_transitionTimer, 0, 1));
+            _transitionPosition += (transitionTo - _transitionPosition)*
+                                   MathHelper.Lerp(0, 1, MathHelper.Clamp(_transitionTimer, 0, 1));
 
             if (float.IsNaN(_transitionPosition))
             {
@@ -186,8 +190,8 @@ namespace XnaDarts.ScreenManagement
 
             var stackPanelPosition = new Vector2
             {
-                X = _transitionPosition*MenuPosition.X*viewport.X,
-                Y = MenuPosition.Y*viewport.Y
+                X = _transitionPosition*MenuPosition.X,
+                Y = MenuPosition.Y
             };
 
             var sin = ((float) Math.Sin(ElapsedTime*5f) + 1.0f)/2.0f;
@@ -195,7 +199,8 @@ namespace XnaDarts.ScreenManagement
             var c = Color.Lerp(Color.White, XnaDartsColors.SelectedMenuItemForeground, alpha);
             ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = c;
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                ResolutionHandler.GetTransformationMatrix());
             StackPanel.Draw(spriteBatch, stackPanelPosition, TransitionAlpha);
             spriteBatch.End();
         }
