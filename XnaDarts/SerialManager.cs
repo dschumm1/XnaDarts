@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using XnaDarts.Gameplay;
 using XnaDarts.Screens;
 using XnaDarts.Screens.Menus;
 
@@ -57,21 +59,12 @@ namespace XnaDarts
 
     public class SerialManager
     {
-        public delegate void DartHitDelegate(IntPair coords);
-
-        /// <summary>
-        ///     TODO: Instead of having a dart trigger an event, handle it through InputHandler which would make it easier manage
-        /// </summary>
-        /// <param name="segment"></param>
-        /// <param name="multiplier"></param>
-        public delegate void DartRegisteredDelegate(int segment, int multiplier);
-
         private static SerialManager _instance;
         private bool[] _buttonStates = {false, false, false, false, false};
-        public DartHitDelegate OnDartHit;
-        public DartRegisteredDelegate OnDartRegistered;
         private readonly SerialPort _serialPort;
-
+        private List<IntPair> _mappedDartHits = new List<IntPair>();
+        private List<IntPair> _dartHits = new List<IntPair>();
+ 
         private SerialManager()
         {
             _serialPort = new SerialPort();
@@ -94,6 +87,32 @@ namespace XnaDarts
                 return temp;
             }
         }
+
+        public List<IntPair> DartHits
+        {
+            get
+            {
+                lock (_dartHits)
+                {
+                    var temp = _dartHits.Select(hit => new IntPair(hit.X, hit.Y)).ToList();
+                    _dartHits.Clear();
+                    return temp;
+                }
+            }
+        }
+
+        public List<IntPair> MappedDartHits
+        {
+            get
+            {
+                lock (_mappedDartHits)
+                {
+                    var temp = _mappedDartHits.Select(hit => new IntPair(hit.X, hit.Y)).ToList();
+                    _mappedDartHits.Clear();
+                    return temp;
+                }
+            }
+        } 
 
         public void UpdateSerialPortPropertiesFromOptions()
         {
@@ -156,15 +175,15 @@ namespace XnaDarts
 
             if (indata.StartsWith("B")) // Button messages are prefixed with "B:"
             {
-                parseButton(indata);
+                _parseButton(indata);
             }
             else
             {
-                parseScore(indata);
+                _parseScore(indata);
             }
         }
 
-        private void parseButton(string indata)
+        private void _parseButton(string indata)
         {
             // A button message is in the format B: X, where X is the index of the pressed button
             var temp = indata.Substring(2); // temp now holds X
@@ -173,7 +192,7 @@ namespace XnaDarts
             _buttonStates[buttonIndex] = true;
         }
 
-        private void parseScore(string indata)
+        private void _parseScore(string indata)
         {
             // A dart hit is in the format H: X, Y, where X, Y is the coordinate of the hit segment
             var inCoordinates = indata.Substring(2).Split(',');
@@ -182,9 +201,9 @@ namespace XnaDarts
             {
                 var coords = new IntPair(int.Parse(inCoordinates[0]), int.Parse(inCoordinates[1]));
 
-                if (OnDartHit != null)
+                lock (_dartHits)
                 {
-                    OnDartHit(coords);
+                    _dartHits.Add(coords);                    
                 }
 
                 // Check if the given coordinates are mapped to a segment
@@ -193,9 +212,12 @@ namespace XnaDarts
                     //Find the key (segment, multiplier) which contains the value of the received X, Y coordinates
                     var segmentInfo = XnaDartsGame.Options.SegmentMap.First(p => coords.Equals(p.Value)).Key;
 
-                    if (segmentInfo != null && OnDartRegistered != null)
+                    if (segmentInfo != null)
                     {
-                        OnDartRegistered(segmentInfo.X, segmentInfo.Y);
+                        lock (_mappedDartHits)
+                        {
+                            _mappedDartHits.Add(segmentInfo);
+                        }
                     }
                 }
             }

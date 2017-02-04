@@ -178,11 +178,7 @@ namespace XnaDarts.Screens.GameModeScreens
             }
 
             _background = Content.Load<Texture2D>(@"Images\Backgrounds\AbstractBackground");
-                // XnaDartsGame.Options.Theme
-
-            SerialManager.Instance().OnDartRegistered = _registerDart;
-            SerialManager.Instance().OnDartHit = null;
-
+ 
             _dartboard = new Dartboard();
             _dartboard.LoadContent(Content);
             _dartboard.OnSegmentClicked += _registerDart;
@@ -207,7 +203,6 @@ namespace XnaDarts.Screens.GameModeScreens
 
         public override void UnloadContent()
         {
-            SerialManager.Instance().OnDartRegistered = null;
             Content.Unload();
         }
 
@@ -253,6 +248,8 @@ namespace XnaDarts.Screens.GameModeScreens
             {
                 ForcePlayerChange();
             }
+
+            inputState.MappedDartHits.ForEach(hit => _registerDart(hit.X, hit.Y));
         }
 
         #endregion

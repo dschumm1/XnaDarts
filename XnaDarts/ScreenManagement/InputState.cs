@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework.Input;
 
 namespace XnaDarts.ScreenManagement
 {
@@ -10,6 +11,8 @@ namespace XnaDarts.ScreenManagement
         public bool[] CurrentBoardButtonStates;
         public MouseState CurrentMouseState;
         public bool[] LastBoardButtonStates;
+        public List<IntPair> MappedDartHits;
+        public List<IntPair> DartHits; 
 
         public bool MouseMove
         {
@@ -100,6 +103,9 @@ namespace XnaDarts.ScreenManagement
 
             LastBoardButtonStates = CurrentBoardButtonStates;
             CurrentBoardButtonStates = SerialManager.Instance().ButtonStates;
+
+            DartHits = SerialManager.Instance().DartHits;
+            MappedDartHits = SerialManager.Instance().MappedDartHits;
         }
 
         public bool IsKeyPressed(Keys key)

@@ -19,9 +19,6 @@ namespace XnaDarts.Screens.Menus
             MenuItems.Items.Add(_clear);
 
             MenuItems.Items.Reverse(); //Want clear to end up at the top of the list so reverse
-
-            SerialManager.Instance().OnDartRegistered = null;
-            SerialManager.Instance().OnDartHit = handleDart;
         }
 
         public event EventHandler OnDartHit;
@@ -37,7 +34,14 @@ namespace XnaDarts.Screens.Menus
             CancelScreen();
         }
 
-        private void handleDart(IntPair coords)
+        public override void HandleInput(InputState inputState)
+        {
+            base.HandleInput(inputState);
+
+            inputState.DartHits.ForEach(_handleDart);
+        }
+
+        private void _handleDart(IntPair coords)
         {
             SegmentCoordinates = coords;
 

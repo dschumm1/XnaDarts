@@ -33,7 +33,10 @@ namespace XnaDarts.Screens.Menus
             get { return new Vector2(_mapTexture.Width, _mapTexture.Height)*0.5f; }
         }
 
-        public event SerialManager.DartRegisteredDelegate OnSegmentClicked;
+        /// <summary>
+        /// segment, multiplier
+        /// </summary>
+        public event Action<int, int> OnSegmentClicked;
 
         public void LoadContent(ContentManager content)
         {
