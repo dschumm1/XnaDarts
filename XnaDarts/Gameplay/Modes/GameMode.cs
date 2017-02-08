@@ -110,7 +110,7 @@ namespace XnaDarts.Gameplay.Modes
 
         public virtual bool IsGameOver
         {
-            get { return IsLastRound && IsLastPlayer && IsLastThrow; }
+            get { return IsLastRound && IsLastPlayer && IsEndOfTurn; }
         }
 
         public virtual bool IsEndOfTurn

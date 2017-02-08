@@ -30,8 +30,7 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             get
             {
                 return base.IsGameOver ||
-                       _isLastPlayerAndEndOfTurnAndSomeoneHasWon() ||
-                       _isBustAndIsLastRound();
+                       _isLastPlayerAndEndOfTurnAndSomeoneHasWon();
             }
         }
 
@@ -105,13 +104,6 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             return IsLastPlayer &&
                    IsEndOfTurn &&
                    Players.Any(p => IsAtZero(p) && !IsPlayerBustAtCurrentRound(p));
-        }
-
-        private bool _isBustAndIsLastRound()
-        {
-            return
-                _isBustAtScore(CurrentPlayer.GetScore(), _lastDartInRoundWasADoubleOrTriple(CurrentPlayer, CurrentRoundIndex)) &&
-                IsLastRound;
         }
 
         #region Fields and Properties

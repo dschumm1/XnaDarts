@@ -41,5 +41,14 @@ namespace XnaDartsTests
             Assert.AreEqual(zeroOne.GetLeaders().Count, 1);
             Assert.AreEqual(zeroOne.GetLeaders().First(), zeroOne.Players.First());
         }
+
+        [Test]
+        public void ZeroOneIsGameOverIfBustInLastRound()
+        {
+            var zeroOne = new ZeroOne(1, 20) { IsMasterOut = true, MaxRounds = 1};
+            zeroOne.RegisterDart(20, 1);
+            Assert.IsTrue(zeroOne.IsPlayerBustAtCurrentRound(zeroOne.CurrentPlayer));
+            Assert.IsTrue(zeroOne.IsGameOver);
+        }
     }
 }

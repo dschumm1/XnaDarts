@@ -33,5 +33,24 @@ namespace XnaDartsTests
             Assert.AreEqual(zeroOne.GetLeaders().Count, 1);
             Assert.AreEqual(zeroOne.GetLeaders().First(), zeroOne.Players.First());
         }
+
+        [Test]
+        public void ZeroOneIsGameOverIfBustInLastRound()
+        {
+            var zeroOne = new ZeroOne(1, 20) { MaxRounds = 1 };
+            zeroOne.RegisterDart(15, 2);
+            Assert.IsTrue(zeroOne.IsPlayerBustAtCurrentRound(zeroOne.CurrentPlayer));
+            Assert.IsTrue(zeroOne.IsGameOver);
+        }
+
+        [Test]
+        public void ZeroOneGameOverBug()
+        {
+            // This bug occurred when player 1 went bust in the last round, which didn't let player 2 throw
+            var zeroOne = new ZeroOne(2, 20) { MaxRounds = 1 };
+            zeroOne.RegisterDart(15, 2);
+            Assert.IsTrue(zeroOne.IsPlayerBustAtCurrentRound(zeroOne.CurrentPlayer));
+            Assert.IsFalse(zeroOne.IsGameOver);
+        }
     }
 }
