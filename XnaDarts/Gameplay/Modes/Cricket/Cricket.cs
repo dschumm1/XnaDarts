@@ -29,10 +29,10 @@ namespace XnaDarts.Gameplay.Modes.Cricket
             }
         }
 
-        protected override void _removeDart()
+        protected override void _removeLastDart()
         {
             CricketHits.RemoveAll(hit => hit.Dart == CurrentPlayerRound.Darts.Last());
-            base._removeDart();
+            base._removeLastDart();
         }
 
         public override void RegisterDart(int segment, int multiplier)

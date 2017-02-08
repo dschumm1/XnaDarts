@@ -55,7 +55,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         protected override void HandleEndOfTurn()
         {
-            if (ZeroOne.IsBust())
+            if (ZeroOne.IsPlayerBustAtCurrentRound(ZeroOne.CurrentPlayer))
             {
                 _handleBust();
             }

@@ -14,7 +14,7 @@ namespace XnaDarts.Gameplay.Modes
             CurrentPlayerRound.Darts.Add(dart);
         }
 
-        protected virtual void _removeDart()
+        protected virtual void _removeLastDart()
         {
             CurrentPlayerRound.Darts.RemoveAt(CurrentPlayerRound.Darts.Count - 1);
         }
@@ -24,20 +24,20 @@ namespace XnaDarts.Gameplay.Modes
             //Remove last dart of the current players throws
             if (CurrentPlayerRound.Darts.Count > 0)
             {
-                _removeDart();
+                _removeLastDart();
             }
             //Back up one player and remove dart
             else if (CurrentPlayerIndex > 0)
             {
                 CurrentPlayerIndex--;
-                _removeDart();
+                _removeLastDart();
             }
             //Back up one round
             else if (CurrentRoundIndex > 0)
             {
                 CurrentRoundIndex--;
                 CurrentPlayerIndex = Players.Count - 1;
-                _removeDart();
+                _removeLastDart();
             }
         }
 

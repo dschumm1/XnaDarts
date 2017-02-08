@@ -4,15 +4,13 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
 {
     public class ZeroOne : GameMode
     {
-        private readonly bool _isMasterOut = true;
-        private bool _isMasterIn = false;
-
         #region Constructor
 
         public ZeroOne(int players, int startScore)
             : base(players)
         {
             StartScore = startScore;
+            HighscoreToWin = false;
         }
 
         #endregion
@@ -22,8 +20,8 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             get
             {
                 return base.IsEndOfTurn ||
-                       HasWon() ||
-                       IsBust();
+                       IsAtZero(CurrentPlayer) ||
+                       IsPlayerBustAtCurrentRound(CurrentPlayer);
             }
         }
 
@@ -37,68 +35,83 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
             }
         }
 
-        public int BustLimit
+        public override int GetScore(Player player)
         {
-            get { return _isMasterOut ? 1 : 0; }
+            return _getScoreUpToRoundIndex(player, CurrentRoundIndex);
         }
 
-        public override int GetScore(Player player)
+        private int _getScoreUpToRoundIndex(Player player, int roundIndex)
         {
             var score = StartScore;
 
-            for (var i = 0; i < CurrentRoundIndex; i++)
+            for (var i = 0; i <= roundIndex; i++)
             {
                 var roundScore = player.Rounds[i].GetScore();
-                var lastOrDefault = player.Rounds[i].Darts.LastOrDefault();
-                if (score - roundScore < BustLimit || (score - roundScore == 0 && (lastOrDefault != null && lastOrDefault.Multiplier == 1))) // Don't count if the player went bust
-                {
+                var scoreAtCurrentIteration = score - roundScore;
+                var lastDartInRoundWasADoubleOrTriple = _lastDartInRoundWasADoubleOrTriple(player, i);
+
+                if (_isBustAtScore(scoreAtCurrentIteration, lastDartInRoundWasADoubleOrTriple))
                     continue;
-                }
+
                 score -= roundScore;
             }
 
-            return score - player.Rounds[CurrentRoundIndex].GetScore();
+            return score;
         }
 
-        public bool IsBust()
+        private static bool _lastDartInRoundWasADoubleOrTriple(Player player, int roundIndex)
         {
-            return GetScore(CurrentPlayer) < BustLimit;
+            var lastDartOrDefault = player.Rounds[roundIndex].Darts.LastOrDefault();
+            var lastDartWasADouble = lastDartOrDefault != null &&
+                                     (lastDartOrDefault.Multiplier == 2 || lastDartOrDefault.Multiplier == 3);
+            return lastDartWasADouble;
         }
 
-        public bool HasWon()
+        private bool _isBustAtScore(int score, bool onADoubleOrTriple)
         {
-            if (_isMasterOut)
+            // If we're below zero we're bust regardless of master out or not
+            if (score < 0)
+                return true;
+
+            if (IsMasterOut)
             {
-                return GetScore(CurrentPlayer) == 0 && _lastDartWasDouble();
+                // Bust if we're at 1 in master out
+                if (score == 1)
+                    return true;
+
+                var isAtZero = score == 0;
+                // Bust if we're at zero and last dart was not a double or triple
+                if (isAtZero && !onADoubleOrTriple)
+                    return true;
             }
-            return GetScore(CurrentPlayer) == 0;
+
+            return false;
         }
 
-        private bool _lastDartWasDouble()
+        public bool IsPlayerBustAtCurrentRound(Player player)
         {
-            var lastRound = CurrentPlayer.Rounds.LastOrDefault();
-            if (lastRound == null)
-            {
-                return false;
-            }
-            var lastDart = lastRound.Darts.LastOrDefault();
-            if (lastDart == null)
-            {
-                return false;
-            }
-            return (lastDart.Multiplier > 1 || lastDart.Segment == 25);
+            var lastRoundScore = _getScoreUpToRoundIndex(player, CurrentRoundIndex - 1);
+            var finalScore = lastRoundScore - CurrentPlayerRound.GetScore();
+            return _isBustAtScore(finalScore, _lastDartInRoundWasADoubleOrTriple(player, CurrentRoundIndex));
+        }
+
+        public bool IsAtZero(Player player)
+        {
+            return GetScore(player) == 0;
         }
 
         private bool _isLastPlayerAndEndOfTurnAndSomeoneHasWon()
         {
             return IsLastPlayer &&
                    IsEndOfTurn &&
-                   Players.Any(p => GetScore(p) == 0);
+                   Players.Any(p => IsAtZero(p) && !IsPlayerBustAtCurrentRound(p));
         }
 
         private bool _isBustAndIsLastRound()
         {
-            return IsBust() && IsLastRound;
+            return
+                _isBustAtScore(CurrentPlayer.GetScore(), _lastDartInRoundWasADoubleOrTriple(CurrentPlayer, CurrentRoundIndex)) &&
+                IsLastRound;
         }
 
         #region Fields and Properties
@@ -109,6 +122,8 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
         {
             get { return "01 (" + StartScore + ")"; }
         }
+
+        public bool IsMasterOut { get; set; }
 
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using XnaDarts.Gameplay.Modes;
+using XnaDarts.Gameplay.Modes.ZeroOne;
 using XnaDarts.ScreenManagement;
 
 namespace XnaDarts.Screens.Menus
@@ -18,14 +19,30 @@ namespace XnaDarts.Screens.Menus
 
             _meRounds = new MenuEntry("Rounds: " + mode.MaxRounds);
 
-            _rounds = new List<int>
+            _rounds = new List<int>();
+
+            var roundChoices = new[] {2, 3, 8, 15, 20};
+
+            for (int i = 0; i < 5; i++)
             {
-                2,
-                3,
-                8,
-                15,
-                20
-            };
+                if (roundChoices[i] < mode.CurrentRoundIndex + 1)
+                {
+                    _rounds.Add(i);
+                }
+            }
+
+            var zeroOne = mode as ZeroOne;
+            if (zeroOne != null)
+            {
+                var masterOutOption = new MenuEntry("Master Out: " + (zeroOne.IsMasterOut ? "On" : "Off"));
+                masterOutOption.OnSelected +=
+                    (sender, args) =>
+                    {
+                        zeroOne.IsMasterOut = !zeroOne.IsMasterOut;
+                        masterOutOption.Text = "Master Out: " + (zeroOne.IsMasterOut ? "On" : "Off");
+                    };
+                MenuItems.Items.Add(masterOutOption);
+            }
 
             _roundIndex = _rounds.IndexOf(_mode.MaxRounds);
             _meRounds.OnSelected += _meRoundsOnSelected;
