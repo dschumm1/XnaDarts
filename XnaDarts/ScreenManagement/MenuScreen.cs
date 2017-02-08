@@ -184,10 +184,6 @@ namespace XnaDarts.ScreenManagement
             _transitionPosition += (transitionTo - _transitionPosition)*
                                    MathHelper.Lerp(0, 1, MathHelper.Clamp(_transitionTimer, 0, 1));
 
-            if (float.IsNaN(_transitionPosition))
-            {
-            }
-
             var stackPanelPosition = new Vector2
             {
                 X = _transitionPosition*MenuPosition.X,

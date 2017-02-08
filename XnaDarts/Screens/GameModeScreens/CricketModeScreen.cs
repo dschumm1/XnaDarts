@@ -14,7 +14,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
             var dartScoreComponent = ((DartScoreComponent) GuiComponents.Find(x => x is DartScoreComponent));
             dartScoreComponent.Vertical = true;
-            dartScoreComponent.Position = new Vector2(0.85f, 0.5f);
+            dartScoreComponent.Position = new Vector2(0.875f, 0.45f);
 
             GuiComponents.Remove(GuiComponents.Find(x => x is BigScoreComponent));
         }

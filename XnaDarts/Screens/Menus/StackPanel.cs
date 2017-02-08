@@ -30,9 +30,9 @@ namespace XnaDarts.Screens.Menus
         /// <param name="items"></param>
         public void AddItems(params GuiItem[] items)
         {
-            for (var i = 0; i < items.Length; i++)
+            foreach (var menuItem in items)
             {
-                Items.Add(items[i]);
+                Items.Add(menuItem);
             }
         }
 

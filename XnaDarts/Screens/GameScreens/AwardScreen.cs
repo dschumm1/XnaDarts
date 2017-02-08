@@ -61,7 +61,7 @@ namespace XnaDarts.Screens.GameScreens
                 throw new Exception("Award Error");
             }
 
-            _videoPlayer.Volume = XnaDartsGame.Options.Volume;
+            _videoPlayer.Volume = XnaDartsGame.Options.Volume * 0.5f;
 
             _videoPlayer.Play(_awards[cue]);
             XnaDartsGame.ScreenManager.AddScreen(this);

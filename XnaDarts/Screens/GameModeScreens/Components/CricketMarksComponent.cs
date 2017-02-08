@@ -59,7 +59,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
             var markScaling = defaultNumberOfSegments/(float) _mode.Segments.Length*Scale;
 
-            var marksPaddingY = _markTextureSize.Y*0.1f;
+            var marksPaddingY = _markTextureSize.Y*0.05f;
             var marksHeight = _markTextureSize.Y + marksPaddingY;
             var marksSpacingY = (marksHeight + marksPaddingY)*markScaling;
             var marksOffsetY = marksSpacingY*_mode.Segments.Length*0.5f;
@@ -189,7 +189,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
 
         #region Fields and Properties
 
-        private const float Scale = 0.66f;
+        private const float Scale = 0.55f;
         private Texture2D _bullTexture;
         private Texture2D _closedTexture;
         private Vector2 _closedTextureSize;

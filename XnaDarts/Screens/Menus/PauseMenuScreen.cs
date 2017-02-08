@@ -28,9 +28,7 @@ namespace XnaDarts.Screens.Menus
 
             //Check if there is a dart that we can remove
             if (!gameplayScreen.Mode.Players.Any(x => x.Rounds.Any(y => y.Darts.Any())))
-            {
                 _unthrow.Enabled = false;
-            }
 
             _unthrow.OnSelected += Unthrow_OnSelected;
             _summary.OnSelected += Summary_OnSelected;
@@ -42,10 +40,7 @@ namespace XnaDarts.Screens.Menus
 
             MenuItems.AddItems(_return);
 
-            if (_gameModeScreen.Mode.CurrentRoundIndex == 0)
-            {
-                MenuItems.AddItems(_modeOptions);
-            }
+            MenuItems.AddItems(_modeOptions);
 
             MenuItems.AddItems(_unthrow, _summary, _options, _help, _quit);
         }
@@ -86,7 +81,8 @@ namespace XnaDarts.Screens.Menus
 
         private void Quit_OnSelected(object sender, EventArgs e)
         {
-            var mbox = new MessageBoxScreen("Quit", "Are you sure you want to quit?", MessageBoxButtons.Yes | MessageBoxButtons.No);
+            var mbox = new MessageBoxScreen("Quit", "Are you sure you want to quit?",
+                MessageBoxButtons.Yes | MessageBoxButtons.No);
             mbox.OnYes += mbox_OnAccept;
             XnaDartsGame.ScreenManager.AddScreen(mbox);
         }
@@ -99,10 +95,11 @@ namespace XnaDarts.Screens.Menus
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, ResolutionHandler.GetTransformationMatrix());
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
+                ResolutionHandler.GetTransformationMatrix());
             var bgAlpha = 0.8f;
             spriteBatch.Draw(ScreenManager.BlankTexture,
-                new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight), Color.Black*bgAlpha);
+                new Rectangle(0, 0, ResolutionHandler.VWidth, ResolutionHandler.VHeight), Color.Black * bgAlpha);
             spriteBatch.End();
 
             base.Draw(spriteBatch);

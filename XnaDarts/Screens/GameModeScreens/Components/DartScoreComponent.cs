@@ -24,7 +24,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         public DartScoreComponent(GameMode mode)
         {
             _mode = mode;
-            Position = new Vector2(0.5f, 0.7f);
+            Position = new Vector2(0.5f, 0.7125f);
         }
 
         public void LoadContent(ContentManager content)

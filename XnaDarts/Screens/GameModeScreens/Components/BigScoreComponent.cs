@@ -12,7 +12,7 @@ namespace XnaDarts.Screens.GameModeScreens.Components
         private readonly GameMode _mode;
         private Texture2D _numbers;
 
-        public Vector2 Position = new Vector2(0.5f, 0.5f);
+        public Vector2 Position = new Vector2(0.5f, 0.45f);
 
         public BigScoreComponent(GameMode mode)
         {

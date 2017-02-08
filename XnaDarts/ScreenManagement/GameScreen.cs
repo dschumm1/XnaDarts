@@ -16,6 +16,10 @@ namespace XnaDarts.ScreenManagement
         public bool IsCoveredByOtherScreen;
         public ScreenState State = ScreenState.Entering;
         protected float TransitionAlpha;
+
+        /// <summary>
+        /// Duration in seconds for the screen to transition off
+        /// </summary>
         protected float TransitionDuration = 0;
 
         public virtual void LoadContent()
@@ -45,7 +49,7 @@ namespace XnaDarts.ScreenManagement
             return dt;
         }
 
-        public void RemoveScreen()
+        public virtual void RemoveScreen()
         {
             XnaDartsGame.ScreenManager.RemoveScreen(this);
         }

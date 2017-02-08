@@ -9,8 +9,8 @@ namespace XnaDarts.Screens.GameScreens
     {
         private AnimatedSprite _playerChangeButton;
 
-        public PlayerChangeScreen(string text, TimeSpan timeout)
-            : base(text, timeout)
+        public PlayerChangeScreen(string text, TimeSpan timeout, float transitionDuration)
+            : base(text, timeout, transitionDuration)
         {
         }
 
@@ -43,8 +43,9 @@ namespace XnaDarts.Screens.GameScreens
                 ResolutionHandler.GetTransformationMatrix());
             var elapsedWidth = (int) (ResolutionHandler.VWidth*(1f - ElapsedTime/Timeout.TotalMilliseconds));
             spriteBatch.Draw(ScreenManager.BlankTexture, new Rectangle(0, 0, elapsedWidth, 20), Color.White*0.33f);
+            _playerChangeButton.Color = Color.White*TransitionAlpha;
             _playerChangeButton.Draw(spriteBatch,
-                new Vector2(ResolutionHandler.VWidth*0.8f, ResolutionHandler.VHeight*0.5f));
+                new Vector2(ResolutionHandler.VWidth*0.85f, ResolutionHandler.VHeight*0.5f));
             spriteBatch.End();
         }
     }

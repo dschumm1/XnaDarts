@@ -26,7 +26,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         public override void LoadContent()
         {
-            _bustScreen = new TimeoutScreen("Bust", TimeSpan.FromSeconds(3))
+            _bustScreen = new TimeoutScreen("Bust", TimeSpan.FromSeconds(3), 0.1f)
             {
                 Color = Color.Red
             };
@@ -78,7 +78,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         public override void StartRound()
         {
-            //Stop any award videos that are currently playing
+            // Stop any award videos that are currently playing
             _awardScreen.Stop();
 
             base.StartRound();

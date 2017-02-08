@@ -13,6 +13,7 @@ namespace XnaDarts
         public bool Reverse = false;
         public Rectangle SourceRectangle = Rectangle.Empty;
         public Texture2D Texture;
+        public Color Color = Color.White;
 
         public void Update(GameTime gameTime)
         {
@@ -48,7 +49,7 @@ namespace XnaDarts
             var frameWidth = Texture.Width/Frames;
             SourceRectangle.X = CurrentFrame*frameWidth;
 
-            batch.Draw(Texture, position - offset, SourceRectangle, Color.White);
+            batch.Draw(Texture, position - offset, SourceRectangle, Color);
         }
 
         public void Draw(SpriteBatch batch, Vector2 position)

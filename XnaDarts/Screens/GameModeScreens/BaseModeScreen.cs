@@ -39,21 +39,12 @@ namespace XnaDarts.Screens.GameModeScreens
             StartRound();
         }
 
-        /// <summary>
-        ///     This method is fired by the serial manager when a dart hits the dartboard
-        /// </summary>
-        /// <param name="segment"></param>
-        /// <param name="multiplier"></param>
         private void _registerDart(int segment, int multiplier)
         {
             if (Mode.IsEndOfTurn)
             {
                 return;
             }
-
-            //Exit screens in case they are still in view
-            _newRoundTimeoutScreen.RemoveScreen();
-            _throwDartsScreen.RemoveScreen();
 
             Mode.RegisterDart(segment, multiplier);
 
@@ -189,12 +180,16 @@ namespace XnaDarts.Screens.GameModeScreens
             _dartboard.Scale = 0.5f;
 
             _playerChangeScreen = new PlayerChangeScreen("Player Change",
-                TimeSpan.FromSeconds(XnaDartsGame.Options.PlayerChangeTimeout));
+                TimeSpan.FromSeconds(XnaDartsGame.Options.PlayerChangeTimeout), .1f);
             _playerChangeScreen.LoadContent();
             _playerChangeScreen.OnTimeout += _playerChange;
 
-            _throwDartsScreen = new TimeoutScreen(Mode.CurrentPlayer.Name + " throw darts!", TimeSpan.FromSeconds(3));
-            _newRoundTimeoutScreen = new TimeoutScreen("Round 1", TimeSpan.FromSeconds(3));
+            // By using a timeout of 0 and setting the transition to 2s
+            // the screen will immediately exit and fade away, allowing for the game mode
+            // (which is the screen beneath it) to handle input.
+            // This means that any darts thrown while the message is fading away will be registered
+            _throwDartsScreen = new TimeoutScreen(Mode.CurrentPlayer.Name + " throw darts!", TimeSpan.Zero, 2f);
+            _newRoundTimeoutScreen = new TimeoutScreen("Round 1", TimeSpan.FromSeconds(3), .1f);
             _newRoundTimeoutScreen.OnTimeout += _startTurn;
 
             foreach (var drawableGameComponent in GuiComponents)
@@ -329,9 +324,7 @@ namespace XnaDarts.Screens.GameModeScreens
 
         protected void ShowPlayerChangeScreen()
         {
-            _playerChangeScreen.Timeout = TimeSpan.FromSeconds(
-                XnaDartsGame.Options.PlayerChangeTimeout
-                );
+            _playerChangeScreen.Timeout = TimeSpan.FromSeconds(XnaDartsGame.Options.PlayerChangeTimeout);
             XnaDartsGame.ScreenManager.AddScreen(_playerChangeScreen);
         }
 

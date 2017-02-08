@@ -33,7 +33,7 @@ namespace XnaDarts
 
             _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
 
-            _font = _content.Load<SpriteFont>(@"Fonts\Trebuchet22");
+            _font = _content.Load<SpriteFont>(@"Fonts\Trebuchet12");
         }
 
         public override void Draw(GameTime gameTime)

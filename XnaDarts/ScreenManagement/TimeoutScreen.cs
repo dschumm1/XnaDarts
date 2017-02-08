@@ -8,20 +8,17 @@ namespace XnaDarts.ScreenManagement
     public class TimeoutScreen : GameScreen
     {
         private Texture2D _backgroundTexture;
-        //private Curve _myCurve;
         private SpriteFont _spriteFont = ScreenManager.Trebuchet64;
         public ContentManager Content;
+        private bool _hasTimedOut;
 
-        public TimeoutScreen(string text, TimeSpan timeout)
+        public TimeoutScreen(string text, TimeSpan timeout, float transitionDuration)
         {
             Text = text.ToUpper();
 
             Timeout = timeout;
-
-            if (Timeout == TimeSpan.Zero)
-            {
-                Timeout = TimeSpan.MaxValue;
-            }
+            TransitionDuration = transitionDuration;
+            TransitionAlpha = 1;
 
             Position = new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight)*0.5f;
             Color = Color.White;
@@ -46,9 +43,13 @@ namespace XnaDarts.ScreenManagement
 
         public void TimedOut()
         {
-            ElapsedTime = 0;
+            if (_hasTimedOut)
+            {
+                return;
+            }
 
-            XnaDartsGame.ScreenManager.RemoveScreen(this);
+            _hasTimedOut = true;
+            State = ScreenState.Exiting;
 
             if (OnTimeout != null)
             {
@@ -65,7 +66,23 @@ namespace XnaDarts.ScreenManagement
 
             _backgroundTexture =
                 Content.Load<Texture2D>(@"Images\" + XnaDartsGame.Options.Theme + @"\" + "MessageBackground");
-            //_myCurve = Content.Load<Curve>(@"Curves\MyCurve");
+        }
+
+        public override void RemoveScreen()
+        {
+            base.RemoveScreen();
+            _resetState();
+        }
+
+        /// <summary>
+        /// Resetting the state of this screen allows for the same instance to be reused and added again
+        /// </summary>
+        private void _resetState()
+        {
+            State = ScreenState.Entering;
+            _hasTimedOut = false;
+            ElapsedTime = 0;
+            TransitionAlpha = 1;
         }
 
         public override void HandleInput(InputState inputState)
@@ -90,19 +107,17 @@ namespace XnaDarts.ScreenManagement
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null,
                 ResolutionHandler.GetTransformationMatrix());
             spriteBatch.Draw(_backgroundTexture,
                 new Rectangle(0, (int) (ResolutionHandler.VHeight*0.5f - _backgroundTexture.Height*0.5f),
-                    ResolutionHandler.VWidth, _backgroundTexture.Height - 25), BackgroundColor);
+                    ResolutionHandler.VWidth, _backgroundTexture.Height - 25), BackgroundColor * TransitionAlpha);
 
             var origin = _spriteFont.MeasureString(Text)*0.5f;
-            var scale = 1.0f; //_myCurve.Evaluate(ElapsedTime*0.001f); //TODO: Fix
-            spriteBatch.DrawString(_spriteFont, Text, Position + Vector2.One, Color.Black, 0, origin, scale,
+            var scale = 1.0f;
+            spriteBatch.DrawString(_spriteFont, Text, Position + Vector2.One, Color.Black * TransitionAlpha, 0, origin, scale,
                 SpriteEffects.None, 0);
-            spriteBatch.DrawString(_spriteFont, Text, Position, Color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(_spriteFont, Text, Position, Color * TransitionAlpha, 0, origin, scale, SpriteEffects.None, 0);
             spriteBatch.End();
         }
     }

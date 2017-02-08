@@ -62,8 +62,8 @@ namespace XnaDarts.Screens.GameModeScreens.Components
             position.Y += smallFont.LineSpacing;
 
             text = _mode.Name;
-            TextBlock.DrawShadowed(spriteBatch, bigFont, text, Color.White, position);
-            position.Y += bigFont.MeasureString(text).Y;
+            TextBlock.DrawShadowed(spriteBatch, smallFont, text, Color.White, position);
+            position.Y += smallFont.MeasureString(text).Y;
         }
     }
 }

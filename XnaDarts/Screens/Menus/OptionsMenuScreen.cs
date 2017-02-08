@@ -91,12 +91,6 @@ namespace XnaDarts.Screens.Menus
             get
             {
                 var text = XnaDartsGame.Options.PlayerChangeTimeout + "s";
-
-                if (XnaDartsGame.Options.PlayerChangeTimeout == 0)
-                {
-                    text = "Disabled";
-                }
-
                 return text;
             }
         }
@@ -272,9 +266,9 @@ namespace XnaDarts.Screens.Menus
         {
             XnaDartsGame.Options.PlayerChangeTimeout -= 1;
 
-            if (XnaDartsGame.Options.PlayerChangeTimeout < 0)
+            if (XnaDartsGame.Options.PlayerChangeTimeout < 1)
             {
-                XnaDartsGame.Options.PlayerChangeTimeout = 0;
+                XnaDartsGame.Options.PlayerChangeTimeout = 1;
             }
 
             _playerChangeTimeout.Value = PlayerChangeTimeoutText;
