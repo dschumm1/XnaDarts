@@ -21,7 +21,8 @@ namespace XnaDarts
         Double,
         Triple,
         CricketClosed,
-        MenuBack
+        MenuBack,
+        Miss
     }
 
     public class SoundManager
@@ -69,6 +70,8 @@ namespace XnaDarts
                     return dir + "triple";
                 case SoundCue.CricketClosed:
                     return dir + "cricketclosed";
+                case SoundCue.Miss:
+                    return dir + "miss";
             }
 
             return "";

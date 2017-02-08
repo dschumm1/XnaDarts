@@ -210,12 +210,6 @@
 /processorParam:Quality=Best
 /build:Sounds/single.wav
 
-#begin Sounds/single2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/single2.wav
-
 #begin Sounds/singlebullseye.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -743,4 +737,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Triple.png
+
+#begin Sounds/miss.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/miss.wav
+
+#begin Fonts/Trebuchet12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Trebuchet12.spritefont
 

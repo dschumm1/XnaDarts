@@ -138,7 +138,11 @@ namespace XnaDarts.Screens.GameModeScreens
 
         private void _playDartHitSound(int segment, int multiplier)
         {
-            if (segment == 25)
+            if (segment == 0 && multiplier == 0)
+            {
+                XnaDartsGame.SoundManager.PlaySound(SoundCue.Miss);
+            }
+            else if (segment == 25)
             {
                 if (multiplier == 2)
                 {
