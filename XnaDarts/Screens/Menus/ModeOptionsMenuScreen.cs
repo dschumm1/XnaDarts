@@ -17,18 +17,20 @@ namespace XnaDarts.Screens.Menus
         {
             _mode = mode;
 
-            _meRounds = new MenuEntry("Rounds: " + mode.MaxRounds);
-
-            _rounds = new List<int>();
-
-            var roundChoices = new[] {2, 3, 8, 15, 20};
-
-            for (int i = 0; i < 5; i++)
+            if (mode.CurrentRoundIndex == 0)
             {
-                if (roundChoices[i] < mode.CurrentRoundIndex + 1)
-                {
-                    _rounds.Add(i);
-                }
+                _meRounds = new MenuEntry("Rounds: " + mode.MaxRounds);
+
+                _rounds = new List<int>();
+
+                var roundChoices = new[] { 2, 3, 8, 15, 20 };
+
+                _rounds.AddRange(roundChoices);
+    
+                _roundIndex = _rounds.IndexOf(_mode.MaxRounds);
+                _meRounds.OnSelected += _meRoundsOnSelected;
+
+                MenuItems.Items.Add(_meRounds);
             }
 
             var zeroOne = mode as ZeroOne;
@@ -44,13 +46,10 @@ namespace XnaDarts.Screens.Menus
                 MenuItems.Items.Add(masterOutOption);
             }
 
-            _roundIndex = _rounds.IndexOf(_mode.MaxRounds);
-            _meRounds.OnSelected += _meRoundsOnSelected;
-
             var back = new MenuEntry("Back");
             back.OnSelected += (sender, args) => CancelScreen();
 
-            MenuItems.AddItems(_meRounds, back);
+            MenuItems.AddItems(back);
         }
 
         private void _meRoundsOnSelected(object sender, EventArgs e)
