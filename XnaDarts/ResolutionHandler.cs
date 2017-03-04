@@ -3,17 +3,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XnaDarts
 {
-    static class ResolutionHandler
+    internal static class ResolutionHandler
     {
-        static private GraphicsDeviceManager _device;
+        private static GraphicsDeviceManager _device;
 
-        static private int _width = 800;
-        static private int _height = 600;
-        static private int _vWidth = 1024;
-        static private int _vHeight = 768;
-        static private Matrix _scaleMatrix;
-        static private bool _fullScreen;
-        static private bool _dirtyMatrix = true;
+        private static int _width = 800;
+        private static int _height = 600;
+        private static int _vWidth = 1024;
+        private static int _vHeight = 768;
+        private static Matrix _scaleMatrix;
+        private static bool _fullScreen;
+        private static bool _dirtyMatrix = true;
+        public static int ViewportX { get; set; }
+        public static int ViewportY { get; set; }
 
         public static int VWidth
         {
@@ -27,7 +29,7 @@ namespace XnaDarts
             set { _vHeight = value; }
         }
 
-        static public void Init(ref GraphicsDeviceManager device)
+        public static void Init(ref GraphicsDeviceManager device)
         {
             _width = device.PreferredBackBufferWidth;
             _height = device.PreferredBackBufferHeight;
@@ -37,14 +39,14 @@ namespace XnaDarts
         }
 
 
-        static public Matrix GetTransformationMatrix()
+        public static Matrix GetTransformationMatrix()
         {
             if (_dirtyMatrix) _recreateScaleMatrix();
 
             return _scaleMatrix;
         }
 
-        static public void SetResolution(int width, int height, bool fullScreen)
+        public static void SetResolution(int width, int height, bool fullScreen)
         {
             _width = width;
             _height = height;
@@ -54,7 +56,7 @@ namespace XnaDarts
             _applyResolutionSettings();
         }
 
-        static public void SetVirtualResolution(int width, int height)
+        public static void SetVirtualResolution(int width, int height)
         {
             _vWidth = width;
             _vHeight = height;
@@ -62,9 +64,8 @@ namespace XnaDarts
             _dirtyMatrix = true;
         }
 
-        static private void _applyResolutionSettings()
+        private static void _applyResolutionSettings()
         {
-
 #if XBOX360
            _FullScreen = true;
 #endif
@@ -73,8 +74,8 @@ namespace XnaDarts
             // be set to anything equal to or smaller than the actual screen size.
             if (_fullScreen == false)
             {
-                if ((_width <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
-                    && (_height <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height))
+                if (_width <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width
+                    && _height <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height)
                 {
                     _device.PreferredBackBufferWidth = _width;
                     _device.PreferredBackBufferHeight = _height;
@@ -88,10 +89,8 @@ namespace XnaDarts
                 // adapter can handle the video mode we are trying to set.  To do this, we will
                 // iterate through the display modes supported by the adapter and check them against
                 // the mode we want to set.
-                foreach (DisplayMode dm in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
-                {
-                    // Check the width and height of each mode against the passed values
-                    if ((dm.Width == _width) && (dm.Height == _height))
+                foreach (var dm in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+                    if (dm.Width == _width && dm.Height == _height)
                     {
                         // The mode is supported, so set the buffer formats, apply changes and return
                         _device.PreferredBackBufferWidth = _width;
@@ -99,7 +98,6 @@ namespace XnaDarts
                         _device.IsFullScreen = _fullScreen;
                         _device.ApplyChanges();
                     }
-                }
             }
 
             _dirtyMatrix = true;
@@ -109,10 +107,10 @@ namespace XnaDarts
         }
 
         /// <summary>
-        /// Sets the device to use the draw pump
-        /// Sets correct aspect ratio
+        ///     Sets the device to use the draw pump
+        ///     Sets correct aspect ratio
         /// </summary>
-        static public void BeginDraw()
+        public static void BeginDraw()
         {
             // Start by reseting viewport to (0,0,1,1)
             FullViewport();
@@ -123,22 +121,22 @@ namespace XnaDarts
             // and clear that
             // This way we are gonna have black bars if aspect ratio requires it and
             // the clear color on the rest
-            _device.GraphicsDevice.Clear(Color.CornflowerBlue);
+            _device.GraphicsDevice.Clear(Color.Black);
         }
 
-        static private void _recreateScaleMatrix()
+        private static void _recreateScaleMatrix()
         {
             _dirtyMatrix = false;
             _scaleMatrix = Matrix.CreateScale(
-                           (float)_device.GraphicsDevice.Viewport.Width / _vWidth,
-                           (float)_device.GraphicsDevice.Viewport.Width / _vWidth,
-                           1f);
+                (float) _device.GraphicsDevice.Viewport.Width / _vWidth,
+                (float) _device.GraphicsDevice.Viewport.Width / _vWidth,
+                1f);
         }
 
 
-        static public void FullViewport()
+        public static void FullViewport()
         {
-            Viewport vp = new Viewport();
+            var vp = new Viewport();
             vp.X = vp.Y = 0;
             vp.Width = _width;
             vp.Height = _height;
@@ -146,35 +144,37 @@ namespace XnaDarts
         }
 
         /// <summary>
-        /// Get virtual Mode Aspect Ratio
+        ///     Get virtual Mode Aspect Ratio
         /// </summary>
         /// <returns>aspect ratio</returns>
-        static public float GetVirtualAspectRatio()
+        public static float GetVirtualAspectRatio()
         {
-            return (float)_vWidth / (float)_vHeight;
+            return _vWidth / (float) _vHeight;
         }
 
-        static public void ResetViewport()
+        public static void ResetViewport()
         {
-            float targetAspectRatio = GetVirtualAspectRatio();
+            var targetAspectRatio = GetVirtualAspectRatio();
             // figure out the largest area that fits in this resolution at the desired aspect ratio
-            int width = _device.PreferredBackBufferWidth;
-            int height = (int)(width / targetAspectRatio + .5f);
-            bool changed = false;
+            var width = _device.PreferredBackBufferWidth;
+            var height = (int) (width / targetAspectRatio + .5f);
+            var changed = false;
 
             if (height > _device.PreferredBackBufferHeight)
             {
                 height = _device.PreferredBackBufferHeight;
                 // PillarBox
-                width = (int)(height * targetAspectRatio + .5f);
+                width = (int) (height * targetAspectRatio + .5f);
                 changed = true;
             }
 
             // set up the new viewport centered in the backbuffer
-            Viewport viewport = new Viewport
+            ViewportX = _device.PreferredBackBufferWidth / 2 - width / 2;
+            ViewportY = _device.PreferredBackBufferHeight / 2 - height / 2;
+            var viewport = new Viewport
             {
-                X = (_device.PreferredBackBufferWidth/2) - (width/2),
-                Y = (_device.PreferredBackBufferHeight/2) - (height/2),
+                X = ViewportX,
+                Y = ViewportY,
                 Width = width,
                 Height = height,
                 MinDepth = 0,
@@ -183,12 +183,9 @@ namespace XnaDarts
 
 
             if (changed)
-            {
                 _dirtyMatrix = true;
-            }
 
             _device.GraphicsDevice.Viewport = viewport;
         }
-
     }
 }

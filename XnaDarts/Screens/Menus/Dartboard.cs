@@ -30,11 +30,11 @@ namespace XnaDarts.Screens.Menus
 
         public Vector2 TextureCenter
         {
-            get { return new Vector2(_mapTexture.Width, _mapTexture.Height)*0.5f; }
+            get { return new Vector2(_mapTexture.Width, _mapTexture.Height) * 0.5f; }
         }
 
         /// <summary>
-        /// segment, multiplier
+        ///     segment, multiplier
         /// </summary>
         public event Action<int, int> OnSegmentClicked;
 
@@ -52,25 +52,25 @@ namespace XnaDarts.Screens.Menus
 
         public void HandleInput(InputState input)
         {
-            var segment = GetSegment(new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y));
+            var mousePosition = new Vector2(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+            var viewportOffset = new Vector2(ResolutionHandler.ViewportX, ResolutionHandler.ViewportY);
+            var mouseInGameCoords = Vector2.Transform(mousePosition - viewportOffset,
+                Matrix.Invert(ResolutionHandler.GetTransformationMatrix()));
+
+            var segment = GetSegment(mouseInGameCoords);
             if (segment != null)
-            {
                 if (input.MouseClick)
-                {
                     if (OnSegmentClicked != null)
-                    {
                         OnSegmentClicked(segment.X, segment.Y);
-                    }
-                }
-            }
 
             _highlight = segment;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var translation = Position*new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight);
-            var transform = Matrix.CreateScale(Scale)*Matrix.CreateTranslation(new Vector3(translation, 0)) * ResolutionHandler.GetTransformationMatrix();
+            var translation = Position * new Vector2(ResolutionHandler.VWidth, ResolutionHandler.VHeight);
+            var transform = Matrix.CreateScale(Scale) * Matrix.CreateTranslation(new Vector3(translation, 0)) *
+                            ResolutionHandler.GetTransformationMatrix();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transform);
 
@@ -107,7 +107,7 @@ namespace XnaDarts.Screens.Menus
             else
             {
                 texture = _textures[segment.Y - 1];
-                rotation = MathHelper.ToRadians(SegmentRotation[segment.X - 1]*SegmentDegrees);
+                rotation = MathHelper.ToRadians(SegmentRotation[segment.X - 1] * SegmentDegrees);
             }
         }
 
@@ -117,16 +117,12 @@ namespace XnaDarts.Screens.Menus
 
             var distanceToCenter = Vector2.Distance(position, dartboardPosition);
 
-            if (distanceToCenter < (DoubleRadius + 30.0f)*Scale)
+            if (distanceToCenter < (DoubleRadius + 30.0f) * Scale)
             {
-                if (distanceToCenter < SingleBullseyeRadius*Scale)
-                {
+                if (distanceToCenter < SingleBullseyeRadius * Scale)
                     return new IntPair(25, 2); // Double BullsEye
-                }
-                if (distanceToCenter < DoubleBullseyeRadius*Scale)
-                {
+                if (distanceToCenter < DoubleBullseyeRadius * Scale)
                     return new IntPair(25, 1); // Single BullsEye
-                }
                 var segmentVector = Vector2.UnitY;
 
                 var rotationMatrix = Matrix.CreateRotationZ(MathHelper.ToRadians(SegmentDegrees));
@@ -138,23 +134,17 @@ namespace XnaDarts.Screens.Menus
                 {
                     var angle = (float) Math.Acos(Vector2.Dot(segmentVector, directionVector));
 
-                    if (Math.Abs(angle) < MathHelper.ToRadians(SegmentDegrees*0.5f))
+                    if (Math.Abs(angle) < MathHelper.ToRadians(SegmentDegrees * 0.5f))
                     {
                         var temp = new IntPair(SegmentOrder[i], 0);
 
-                        if (distanceToCenter > TripleRadius*Scale && distanceToCenter < (TripleRadius + 30.0f)*Scale)
+                        if (distanceToCenter > TripleRadius * Scale && distanceToCenter < (TripleRadius + 30.0f) * Scale)
                             // Triple
-                        {
                             temp.Y = 3;
-                        }
-                        else if (distanceToCenter > DoubleRadius*Scale) //Double
-                        {
+                        else if (distanceToCenter > DoubleRadius * Scale) //Double
                             temp.Y = 2;
-                        }
                         else
-                        {
                             temp.Y = 1;
-                        }
 
                         return temp;
                     }
@@ -169,9 +159,7 @@ namespace XnaDarts.Screens.Menus
         public void ColorSegment(int p, Color c)
         {
             for (var i = 0; i < 3; i++)
-            {
                 SegmentColor.Add(new IntPair(p, i + 1), c);
-            }
         }
     }
 }

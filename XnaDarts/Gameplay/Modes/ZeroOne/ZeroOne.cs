@@ -90,7 +90,7 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
         public bool IsPlayerBustAtCurrentRound(Player player)
         {
             var lastRoundScore = _getScoreUpToRoundIndex(player, CurrentRoundIndex - 1);
-            var finalScore = lastRoundScore - CurrentPlayerRound.GetScore();
+            var finalScore = lastRoundScore - player.Rounds[CurrentRoundIndex].GetScore();
             return _isBustAtScore(finalScore, _lastDartInRoundWasADoubleOrTriple(player, CurrentRoundIndex));
         }
 
@@ -101,9 +101,10 @@ namespace XnaDarts.Gameplay.Modes.ZeroOne
 
         private bool _isLastPlayerAndEndOfTurnAndSomeoneHasWon()
         {
+            var someoneHasWon = Players.Any(p => IsAtZero(p) && !IsPlayerBustAtCurrentRound(p));
             return IsLastPlayer &&
                    IsEndOfTurn &&
-                   Players.Any(p => IsAtZero(p) && !IsPlayerBustAtCurrentRound(p));
+                   someoneHasWon;
         }
 
         #region Fields and Properties

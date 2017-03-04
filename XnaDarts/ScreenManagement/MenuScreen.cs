@@ -71,10 +71,12 @@ namespace XnaDarts.ScreenManagement
         private void _handleMouseInput(InputState inputState)
         {
             var height = 0;
-            var xScale = ResolutionHandler.VWidth/
-                         (float) XnaDartsGame.GraphicsDeviceManager.GraphicsDevice.Viewport.Width;
-            var yScale = ResolutionHandler.VHeight/
-                         (float) XnaDartsGame.GraphicsDeviceManager.GraphicsDevice.Viewport.Height;
+
+            var mousePosition = new Vector2(inputState.CurrentMouseState.X, inputState.CurrentMouseState.Y);
+            var viewportOffset = new Vector2(ResolutionHandler.ViewportX, ResolutionHandler.ViewportY);
+            var mouseInGameCoords = Vector2.Transform(mousePosition - viewportOffset,
+                Matrix.Invert(ResolutionHandler.GetTransformationMatrix()));
+
             for (var i = 0; i < StackPanel.Items.Count; i++)
             {
                 if (StackPanel.Items[i] == MenuItems)
@@ -83,23 +85,18 @@ namespace XnaDarts.ScreenManagement
                     {
                         var menuItemBoundingBox =
                             new Rectangle(
-                                (int) (MenuPosition.X),
+                                (int) MenuPosition.X,
                                 (int) (MenuPosition.Y + height),
                                 MenuItems.Items[j].Width,
                                 MenuItems.Items[j].Height);
-                        if (menuItemBoundingBox.Contains(inputState.CurrentMouseState.X*xScale,
-                            inputState.CurrentMouseState.Y*yScale))
+                        if (menuItemBoundingBox.Contains(mouseInGameCoords.X, mouseInGameCoords.Y))
                         {
                             _selectedEntry = j;
 
                             if (inputState.MouseClick)
-                            {
                                 ((MenuEntry) MenuItems.Items[j]).Select();
-                            }
                             else if (inputState.MouseRightClick)
-                            {
                                 ((MenuEntry) MenuItems.Items[j]).Cancel();
-                            }
 
                             break;
                         }
@@ -117,22 +114,14 @@ namespace XnaDarts.ScreenManagement
             selectedMenuEntry.HandleInput(inputState);
 
             if (inputState.MenuDown)
-            {
                 _selectedEntry++;
-            }
             if (inputState.MenuUp)
-            {
                 _selectedEntry--;
-            }
 
             if (_selectedEntry > MenuItems.Items.Count - 1)
-            {
                 _selectedEntry = 0;
-            }
             if (_selectedEntry < 0)
-            {
                 _selectedEntry = MenuItems.Items.Count - 1;
-            }
 
             if (inputState.MenuCancel)
             {
@@ -155,10 +144,7 @@ namespace XnaDarts.ScreenManagement
 
             // Screen went from being on top to being covered
             if (_lastIsCoveredByOtherScreen != isCoveredByOtherScreen)
-            {
-                // Reset the transition timer
                 _transitionTimer = 0;
-            }
             _lastIsCoveredByOtherScreen = isCoveredByOtherScreen;
 
             base.Update(gameTime, isCoveredByOtherScreen);
@@ -169,29 +155,23 @@ namespace XnaDarts.ScreenManagement
             var transitionTo = 0;
 
             if (IsCoveredByOtherScreen)
-            {
                 transitionTo = 0;
-            }
             else if (State == ScreenState.Active || State == ScreenState.Entering)
-            {
                 transitionTo = 1;
-            }
             else if (State == ScreenState.Exiting)
-            {
                 transitionTo = 2;
-            }
 
-            _transitionPosition += (transitionTo - _transitionPosition)*
+            _transitionPosition += (transitionTo - _transitionPosition) *
                                    MathHelper.Lerp(0, 1, MathHelper.Clamp(_transitionTimer, 0, 1));
 
             var stackPanelPosition = new Vector2
             {
-                X = _transitionPosition*MenuPosition.X,
+                X = _transitionPosition * MenuPosition.X,
                 Y = MenuPosition.Y
             };
 
-            var sin = ((float) Math.Sin(ElapsedTime*5f) + 1.0f)/2.0f;
-            var alpha = sin*0.8f + 0.2f;
+            var sin = ((float) Math.Sin(ElapsedTime * 5f) + 1.0f) / 2.0f;
+            var alpha = sin * 0.8f + 0.2f;
             var c = Color.Lerp(Color.White, XnaDartsColors.SelectedMenuItemForeground, alpha);
             ((MenuEntry) MenuItems.Items[_selectedEntry]).Color = c;
 

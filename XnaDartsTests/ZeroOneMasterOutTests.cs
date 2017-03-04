@@ -45,9 +45,26 @@ namespace XnaDartsTests
         [Test]
         public void ZeroOneIsGameOverIfBustInLastRound()
         {
-            var zeroOne = new ZeroOne(1, 20) { IsMasterOut = true, MaxRounds = 1};
+            var zeroOne = new ZeroOne(1, 20) { IsMasterOut = true, MaxRounds = 1 };
             zeroOne.RegisterDart(20, 1);
             Assert.IsTrue(zeroOne.IsPlayerBustAtCurrentRound(zeroOne.CurrentPlayer));
+            Assert.IsTrue(zeroOne.IsGameOver);
+        }
+
+        [Test]
+        public void ZeroOneIsGameOverIfFirstPlayerCloseAndLastPlayerBust()
+        {
+            var zeroOne = new ZeroOne(2, 40) { IsMasterOut = true, MaxRounds = 2 };
+            zeroOne.RegisterDart(20, 2);
+            Assert.IsFalse(zeroOne.IsPlayerBustAtCurrentRound(zeroOne.CurrentPlayer));
+            Assert.IsTrue(zeroOne.IsAtZero(zeroOne.CurrentPlayer));
+            Assert.IsFalse(zeroOne.IsGameOver);
+            zeroOne.NextPlayer();
+            zeroOne.RegisterDart(20, 3);
+            Assert.IsTrue(zeroOne.IsAtZero(zeroOne.Players[0]));
+            Assert.IsTrue(zeroOne.IsEndOfTurn);
+            Assert.IsTrue(zeroOne.IsPlayerBustAtCurrentRound(zeroOne.CurrentPlayer));
+            Assert.IsFalse(zeroOne.IsAtZero(zeroOne.CurrentPlayer));
             Assert.IsTrue(zeroOne.IsGameOver);
         }
     }
